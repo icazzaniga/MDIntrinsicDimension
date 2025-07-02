@@ -1,0 +1,46 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "IntrinsicDimension"
+version = "0.1.0"
+description = "Package for intrinsic dimension analysis of objects in time"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "MIT" }
+authors = [
+  { name = "Irene Cazzaniga", email = "irenecazzaniga@cnr.it" }
+]
+keywords = ["molecular-dynamics", "intrinsic-dimension", "machine-learning"]
+classifiers = [
+  "Programming Language :: Python :: 3.11",
+  "Operating System :: OS Independent"
+]
+
+dependencies = [
+    "numpy",
+    "pandas",
+    "matplotlib",
+    "seaborn",
+    "moleculekit",
+    "ipython",
+    #"scikit-learn",
+    "scikit-dimension",
+    #"rdkit-pypi",  # PyPI name for RDKit
+    #"torch==2.0.1+cu118",  # Match your CUDA version
+    #"torch-geometric",
+    #"networkx",
+    #"requests",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "ipython",
+    "jupyter",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/icazzani/IntrinsicDimension"
+"Issue Tracker" = "https://github.com/icazzani/IntrinsicDimension/issues"
