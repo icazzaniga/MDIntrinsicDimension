@@ -3,8 +3,8 @@
 This package estimates the intrinsic dimension (ID) of high-dimensional data from complex biological systems (e.g., protein molecular dynamics), helping you reduce data to a lower-dimensional manifold while preserving essential information.
 
 It includes two primary functions:
-- intrinsic_dimension: computes the ID over the entire MD system.
-- section_intrinsic_dimension: computes the ID for specific segments of the protein.
+- `intrinsic_dimension`: computes the ID over the entire MD system.
+- `section_intrinsic_dimension`: computes the ID for specific segments of the protein.
 
 ## Getting started
 
@@ -26,7 +26,7 @@ This package relies on:
 
 ## Warnings and notes
 
-> **Warning** The ID matrix is of form `n_frames x m_features`, with `n > 100` and `m > 1`. <br> Only the following MoleculeKit projection classes are supported:
+> **Warning:** <br> The ID matrix is of form `n_frames x m_features`, with `n > 100` and `m > 1`. <br> Only the following MoleculeKit projection classes are supported:
 > - "Coordinate"         
 > - "Dihedrals"        
 > - "Distance"
@@ -42,7 +42,7 @@ This package relies on:
 > **Potential file format issues:** <br> MoleculeKit supports many trajectory and topology formats but may raise some parsing problems. <br> We suggest to work with `PDB` for topologies and `dcd` or `xtc` for trajectories. 
 
 ## Usage
-An example notebook is available in the `examples` directory, including:
+A [test notebook](examples/test.ipynb) is available in the `examples/` directory, including:
 - basic functions usage and data handling
 - topology and trajectory loading
 - Kwargs usage
