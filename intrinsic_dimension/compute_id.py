@@ -18,7 +18,7 @@ def compute_local(projection, estimator = 'TwoNN', last = 100):
 		Options: 'CorrInt', 'DANCo', 'ESS', 'FisherS', 'KNN', 'lPCA', 
 		'MADA', 'MiND_ML', 'MLE', 'MOM', 'TLE', 'TwoNN' (default 'TwoNN')
 	last : int, optional
-		Last frames to consider for mean_last calculation (default 100)
+		Defines how many frames to consider for mean_last calculation, starting from the end of the simulation (default 100)
 
 	Returns
 	-------
@@ -56,7 +56,7 @@ def compute_global(projection, estimator = 'TwoNN', last = 100):
 		Options: 'CorrInt', 'DANCo', 'ESS', 'FisherS', 'KNN', 'lPCA', 
 		'MADA', 'MiND_ML', 'MLE', 'MOM', 'TLE', 'TwoNN' (default 'TwoNN')
 	last : int, optional
-		Last frames to consider for gid100 calculation (default 100)
+		Defines how many frames to consider for gid100 calculation, starting from the end of the simulation (default 100)
 
 	Returns
 	-------

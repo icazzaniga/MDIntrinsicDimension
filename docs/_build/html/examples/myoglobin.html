@@ -1,0 +1,766 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="English">
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tutorial &mdash; IntrinsicDimension 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+      <link rel="stylesheet" type="text/css" href="../_static/custom.css" />
+
+  
+      <script src="../_static/jquery.js"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+      <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+      <script src="../_static/doctools.js"></script>
+      <script src="../_static/sphinx_highlight.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #CCFF00" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            IntrinsicDimension
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">MAIN</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../installation.html#dependencies">Dependencies</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../quickstart.html">Quick start</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#file-format-compatibility">File Format Compatibility</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../quickstart.html#non-basic-usage">Non-basic usage</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">TUTORIAL</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../villin_data.html">Intrinsic dimension</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../villin_data.html#section-id">Section id</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../villin_data.html#secondary-structure-id">Secondary Structure id</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../villin_plots.html">Examples <br></a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu"  style="background: #CCFF00" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">IntrinsicDimension</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content style-external-links">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Tutorial <br></li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/examples/myoglobin.ipynb.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tutorial">
+<h1>Tutorial <br><a class="headerlink" href="#tutorial" title="Permalink to this heading"></a></h1>
+<p>Before starting, remember to activate the environment:  <br>
+<strong>source env/bin/activate</strong></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">intrinsic_dimension</span><span class="w"> </span><span class="kn">import</span> <span class="n">intrinsic_dimension</span><span class="p">,</span> <span class="n">section_id</span><span class="p">,</span> <span class="n">secondary_structure_id</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">cm</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">matplotlib.colors</span><span class="w"> </span><span class="kn">import</span> <span class="n">ListedColormap</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">seaborn</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">sns</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">moleculekit.molecule</span><span class="w"> </span><span class="kn">import</span> <span class="n">Molecule</span>
+</pre></div>
+</div>
+</div>
+</div>
+<section id="computing-intrinsic-dimension">
+<h2>Computing Intrinsic Dimension<a class="headerlink" href="#computing-intrinsic-dimension" title="Permalink to this heading"></a></h2>
+<h4><p style=' color:MediumVioletRed;' >Example 1</h4>   <br>  
+<p>Load topology and trajectory (minimum 101 frames). <br></p>
+<p>Metrics &quot;Distances&quot; and &quot;Dihedrals&quot; have default parameters: <br></p>
+<ul class="simple">
+<li><p>Distances = &quot;sele&quot;: &quot;name CA&quot;, &quot;step&quot;: 1, &quot;metric&quot;: &quot;distances&quot;  <br></p></li>
+<li><p>Dihedrals = &quot;dihedrals&quot;: (&quot;phi&quot;, &quot;psi&quot;), &quot;sincos&quot;: False <br></p></li>
+</ul>
+<p>Similarly, &quot;local&quot; and &quot;global&quot; intrinsic dimension methods have default parameters (valid for both): <br></p>
+<ul class="simple">
+<li><p>&quot;estimator&quot;: &quot;TwoNN&quot;  <br></p></li>
+<li><p>&quot;last&quot;: int(100)  <br></p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_all</span><span class="p">,</span> <span class="n">mean_last</span><span class="p">,</span> <span class="n">local_id</span> <span class="o">=</span> <span class="n">intrinsic_dimension</span><span class="p">(</span><span class="n">topology</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;myoglobin/myo_noh_300.xtc&#39;</span><span class="p">),</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Dihedrals&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean instantaneous ID of the entire trajectory:&#39;</span><span class="p">,</span> <span class="n">mean_all</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean instantaneous ID of the last 100 frames:&#39;</span><span class="p">,</span> <span class="n">mean_last</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Istantaneous ID of the entire trajectory:&#39;</span><span class="p">,</span> <span class="n">local_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>intrinsic_dimension.intrinsic_dimension - INFO - Built-in projection &quot;Dihedrals&quot; computed.
+intrinsic_dimension.intrinsic_dimension - INFO - Computing local intrinsic dimension using estimator &quot;TwoNN&quot; (last simulation section = 100 frames).
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean instantaneous ID of the entire trajectory: 12.462616524212551
+Mean instantaneous ID of the last 100 frames: 12.464813064235308
+Istantaneous ID of the entire trajectory: [12.63938514 12.25231996 12.52420405 12.63647994 12.25718849 12.65279308
+ 12.27447019 12.29728478 12.3920995  12.6443908  12.33743311 12.62313694
+ 12.59588149 12.61086086 12.63647994 12.30896116 12.39032541 12.32803955
+ 12.67309519 12.38127276 12.42895588 12.4441556  12.38935018 12.32086401
+ 12.30633109 12.36304428 12.58047446 12.34925244 12.38639616 12.33750467
+ 12.54531956 12.48210522 12.34189931 12.32718267 12.65938848 12.34083897
+ 12.37700326 12.44867408 12.51214286 12.54531956 12.3615692  12.59232612
+ 12.575202   12.42502844 12.66152104 12.61355024 12.42785341 12.58047446
+ 12.38654061 12.54793309 12.5690502  12.47300748 12.41210197 12.47893536
+ 12.6168491  12.46253282 12.51872209 12.38194228 12.53170013 12.34132266
+ 12.61124999 12.3983702  12.5555489  12.31860753 12.43034285 12.56013823
+ 12.5566211  12.40879408 12.46559697 12.55144657 12.42530478 12.42384451
+ 12.28955359 12.53475257 12.41835249 12.56013458 12.55601271 12.44150271
+ 12.28082761 12.21595724 12.47941893 12.36075372 12.47306153 12.42888099
+ 12.58666455 12.61611374 12.63245418 12.60020156 12.56069719 12.39471521
+ 12.37389978 12.43115585 12.43751325 12.55510871 12.39105723 12.34476675
+ 12.18879298 12.57130238 12.56541936 12.43338948 12.43751325 12.46019615
+ 12.40952568 12.15993388 12.57692781 12.60075952 12.62366011 12.41676364
+ 12.58237016 12.56610406 12.59327766 12.56259058 12.59327766 12.44273574
+ 12.54747067 12.2034092  12.42312104 12.35258331 12.44943579 12.55057298
+ 12.21595724 12.17735239 12.55057298 12.48104383 12.52111584]
+</pre></div>
+</div>
+</div>
+</div>
+<h4><p style=' color:MediumVioletRed;' >Example 2</h4> <br>
+<p>Create a Moleculekit Molecule object outside the function.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#load molecule and trajectory first</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">validateElements</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="c1">#validateElements ignores the atom type (needed for tip4p&#39;s &quot;M&quot; particle)</span>
+<span class="n">mol</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;myoglobin/myo_noh_300.xtc&#39;</span><span class="p">)</span>
+
+<span class="n">mean_all</span><span class="p">,</span> <span class="n">mean_last</span><span class="p">,</span> <span class="n">local_id</span> <span class="o">=</span> <span class="n">intrinsic_dimension</span><span class="p">(</span><span class="n">mol</span> <span class="o">=</span> <span class="n">mol</span><span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Dihedrals&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean instantaneous ID of the entire trajectory:&#39;</span><span class="p">,</span> <span class="n">mean_all</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean instantaneous ID of the last 100 frames:&#39;</span><span class="p">,</span> <span class="n">mean_last</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Istantaneous ID of the entire trajectory:&#39;</span><span class="p">,</span> <span class="n">local_id</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>intrinsic_dimension.intrinsic_dimension - INFO - Built-in projection &quot;Dihedrals&quot; computed.
+intrinsic_dimension.intrinsic_dimension - INFO - Computing local intrinsic dimension using estimator &quot;TwoNN&quot; (last simulation section = 100 frames).
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Mean instantaneous ID of the entire trajectory: 12.462616524212551
+Mean instantaneous ID of the last 100 frames: 12.464813064235308
+Istantaneous ID of the entire trajectory: [12.63938514 12.25231996 12.52420405 12.63647994 12.25718849 12.65279308
+ 12.27447019 12.29728478 12.3920995  12.6443908  12.33743311 12.62313694
+ 12.59588149 12.61086086 12.63647994 12.30896116 12.39032541 12.32803955
+ 12.67309519 12.38127276 12.42895588 12.4441556  12.38935018 12.32086401
+ 12.30633109 12.36304428 12.58047446 12.34925244 12.38639616 12.33750467
+ 12.54531956 12.48210522 12.34189931 12.32718267 12.65938848 12.34083897
+ 12.37700326 12.44867408 12.51214286 12.54531956 12.3615692  12.59232612
+ 12.575202   12.42502844 12.66152104 12.61355024 12.42785341 12.58047446
+ 12.38654061 12.54793309 12.5690502  12.47300748 12.41210197 12.47893536
+ 12.6168491  12.46253282 12.51872209 12.38194228 12.53170013 12.34132266
+ 12.61124999 12.3983702  12.5555489  12.31860753 12.43034285 12.56013823
+ 12.5566211  12.40879408 12.46559697 12.55144657 12.42530478 12.42384451
+ 12.28955359 12.53475257 12.41835249 12.56013458 12.55601271 12.44150271
+ 12.28082761 12.21595724 12.47941893 12.36075372 12.47306153 12.42888099
+ 12.58666455 12.61611374 12.63245418 12.60020156 12.56069719 12.39471521
+ 12.37389978 12.43115585 12.43751325 12.55510871 12.39105723 12.34476675
+ 12.18879298 12.57130238 12.56541936 12.43338948 12.43751325 12.46019615
+ 12.40952568 12.15993388 12.57692781 12.60075952 12.62366011 12.41676364
+ 12.58237016 12.56610406 12.59327766 12.56259058 12.59327766 12.44273574
+ 12.54747067 12.2034092  12.42312104 12.35258331 12.44943579 12.55057298
+ 12.21595724 12.17735239 12.55057298 12.48104383 12.52111584]
+</pre></div>
+</div>
+</div>
+</div>
+<h4><p style=' color:MediumVioletRed;' >Example 3</h4> <br>
+<p>Define extra arguments (or modify the default ones). <br>
+Kwargs are organised in: <br></p>
+<ul class="simple">
+<li><p>projection_kwargs(), referred to the projection type selected; <br></p></li>
+<li><p>id_kwargs(), referred to the intrinsic dimension computation (local/global parameters).<br></p></li>
+</ul>
+<p>projection_kwargs are required in all cases exccept Dihedrals and Distances, which have default parameters as described in example 1.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#load molecule and trajectory</span>
+<span class="n">mol</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">validateElements</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="c1">#validateElements ignores the atom type (needed for tip4p&#39;s M particle)</span>
+<span class="n">mol</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="s1">&#39;myoglobin/myo_noh_300.xtc&#39;</span><span class="p">)</span>
+
+<span class="n">proj</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;atomsel&#39;</span><span class="p">:</span><span class="s1">&#39;name CA&#39;</span><span class="p">,</span><span class="s1">&#39;refmol&#39;</span><span class="p">:</span><span class="n">mol</span><span class="p">}</span> <span class="c1">#kwargs required by Coordinate method</span>
+<span class="n">global_all</span><span class="p">,</span> <span class="n">global_last100</span> <span class="o">=</span> <span class="n">intrinsic_dimension</span><span class="p">(</span><span class="n">mol</span><span class="o">=</span><span class="n">mol</span><span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Coordinate&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">,</span> <span class="n">projection_kwargs</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Global ID of the entire trajectory:&#39;</span><span class="p">,</span> <span class="n">global_all</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Global ID of the last 100 frames:&#39;</span><span class="p">,</span> <span class="n">global_last100</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>2025-07-10 16:26:02,571 - moleculekit.molecule - WARNING - Wrapping detected 80 bonds and 2484 atoms. Ignore this message if you believe this is correct, otherwise make sure you have loaded a topology containing all the bonds of the system before wrapping. The results may be inaccurate. If you want to use guessed bonds use the guessBonds argument.
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>intrinsic_dimension.intrinsic_dimension - INFO - Used moleculekit metric projection: MetricCoordinate from moleculekit.projections.metriccoordinate
+intrinsic_dimension.intrinsic_dimension - INFO - Computing global intrinsic dimension using estimator &quot;TwoNN&quot; (last simulation section = 100 frames).
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Global ID of the entire trajectory: 18.635546971814737
+Global ID of the last 100 frames: 19.774953097601355
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="computing-intrinsic-dimension-of-protein-s-section">
+<h2>Computing Intrinsic Dimension of Protein's Section<a class="headerlink" href="#computing-intrinsic-dimension-of-protein-s-section" title="Permalink to this heading"></a></h2>
+<h4><p style=' color:MediumVioletRed;' >Example 4</h4>  <br>
+<p>Similar to intrinisc_dimension(), with two extra parameters required: <br></p>
+<ul class="simple">
+<li><p>window_size (default 10); <br></p></li>
+<li><p>stride (default 1). <br></p></li>
+</ul>
+<p>Returns a DataFrame.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">section_id</span><span class="p">(</span><span class="n">topology</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_300.xtc&#39;</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">5</span> <span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Dihedrals&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ID table: </span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">results</span><span class="o">.</span><span class="n">head</span><span class="p">()</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>intrinsic_dimension.section_id - INFO - Protein has 153 amino acids. Slicing in 28 windows of 15 amino acids each and 5 aminos stride.
+intrinsic_dimension.section_id - INFO - Last 3 amino acids will be ingored.
+intrinsic_dimension.section_id - INFO - Computing local Intrinsic Dimension from Dihedrals.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ID table: 
+    start  end  entire simulation  last simulation  \
+0      1   15          11.872584        11.873683   
+1      6   20          14.235811        14.227232   
+2     11   25          13.710344        13.710242   
+3     16   30          11.447558        11.446090   
+4     21   35          15.543218        15.546694   
+
+                                       instantaneous  
+0  [11.939727047363164, 11.798754784735072, 11.78...  
+1  [14.273448472706413, 14.179781494335032, 14.23...  
+2  [13.714371247585445, 13.728933659292691, 13.71...  
+3  [11.467234954601087, 11.440515743129188, 11.44...  
+4  [15.52633910496367, 15.535759239711869, 15.568...  
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="computing-intrinsic-dimension-of-protein-s-secondary-structures">
+<h2>Computing Intrinsic Dimension of Protein's Secondary Structures<a class="headerlink" href="#computing-intrinsic-dimension-of-protein-s-secondary-structures" title="Permalink to this heading"></a></h2>
+<h4><p style=' color:MediumVioletRed;' >Example 5</h4>  <br>
+<p>Similar to intrinisc_dimension(), with one extra parameters required: <br></p>
+<ul class="simple">
+<li><p>simplified (default = True) return a simplified list of DSSP; <br></p></li>
+</ul>
+<p>Returns two DataFrames:</p>
+<ol class="arabic simple">
+<li><p>with the ID results</p></li>
+<li><p>with the list of secondary structure elements per amido acid.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">,</span> <span class="n">secStr</span> <span class="o">=</span><span class="n">secondary_structure_id</span><span class="p">(</span><span class="n">topology</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_300.xtc&#39;</span><span class="p">,</span> <span class="n">simplified</span> <span class="o">=</span> <span class="kc">True</span> <span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Dihedrals&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;ID table:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">results</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1"> Secondary structure assignments:</span><span class="se">\n</span><span class="s1"> </span><span class="si">{</span><span class="n">secStr</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>intrinsic_dimension.secondary_structure_id - INFO - Secondary structures considered: Coil (C), Strand (E) and Helix (H).
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>intrinsic_dimension.secondary_structure_id - INFO - Computing local Intrinsic Dimension from Dihedrals.
+intrinsic_dimension.secondary_structure_id - WARNING - Skipping segment 58-58: at least two residues per segment are required.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ID table:
+    window start  window end sec str type  entire simulation  last simulation  \
+0             1           3            C           4.105764         4.107474   
+1             4          35            H          18.565015        18.570911   
+2            36          39            C           5.612415         5.612067   
+3            40          42            H           3.479548         3.479429   
+4            43          51            C          10.795216        10.810527   
+
+                                       instantaneous  
+0  [4.145378312376205, 4.033893634747908, 4.03220...  
+1  [18.53909107238954, 18.593916204847854, 18.599...  
+2  [5.629159984545188, 5.636501460985435, 5.62703...  
+3  [3.5125887516349446, 3.4612041804980094, 3.514...  
+4  [10.818688172443375, 10.498556078802512, 10.56...  
+
+ Secondary structure assignments:
+    resid index resname sec str type
+0            1     GLY            C
+1            2     LEU            C
+2            3     SER            C
+3            4     ASP            H
+4            5     GLY            H
+</pre></div>
+</div>
+</div>
+</div>
+</section>
+<section id="plotting-intrinsic-dimension">
+<h2>Plotting Intrinsic Dimension<a class="headerlink" href="#plotting-intrinsic-dimension" title="Permalink to this heading"></a></h2>
+<h4><p style=' color:MediumVioletRed;' >Example 6</h4>   
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">340</span><span class="p">,</span> <span class="mi">380</span><span class="p">,</span> <span class="mi">420</span><span class="p">,</span> <span class="mi">460</span><span class="p">,</span> <span class="mi">500</span><span class="p">]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdYlBu_r</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">states</span><span class="p">)))</span>
+<span class="n">state_ids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Instantaneous Intrinsic Dimension&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> 
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">states</span><span class="p">):</span>
+    <span class="n">mean_all</span><span class="p">,</span> <span class="n">mean_last</span><span class="p">,</span> <span class="n">local_id</span> <span class="o">=</span> <span class="n">intrinsic_dimension</span><span class="p">(</span><span class="n">topology</span><span class="o">=</span><span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;myoglobin/myo_noh_</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1">.xtc&#39;</span><span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Distances&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="n">projection_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">frames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">local_id</span><span class="p">))</span> 
+    <span class="n">state_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">local_id</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">local_id</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frames&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Local ID&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+<span class="c1">#x[0].legend(bbox_to_anchor=(1.2, 0.5), loc=&quot;center right&quot;, title=&#39;Trajectory&#39;)       </span>
+
+<span class="c1">#####################</span>
+
+<span class="n">all_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">state_ids</span><span class="p">)</span>  <span class="c1"># common bin width</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">all_values</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">all_values</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">30</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">local_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">state_ids</span><span class="p">):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">local_id</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Local ID&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Frequency&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center right&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Trajectory&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>intrinsic_dimension.intrinsic_dimension - INFO - Built-in projection &quot;Distances&quot; computed.
+intrinsic_dimension.intrinsic_dimension - INFO - Computing local intrinsic dimension using estimator &quot;TwoNN&quot; (last simulation section = 100 frames).
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">340</span><span class="p">,</span> <span class="mi">380</span><span class="p">,</span> <span class="mi">420</span><span class="p">,</span> <span class="mi">460</span><span class="p">,</span> <span class="mi">500</span><span class="p">]</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdYlBu_r</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">states</span><span class="p">)))</span>
+<span class="n">state_ids</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Instantaneous Intrinsic Dimension&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span> 
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">states</span><span class="p">):</span>
+    <span class="n">mean_all</span><span class="p">,</span> <span class="n">mean_last</span><span class="p">,</span> <span class="n">local_id</span> <span class="o">=</span> <span class="n">intrinsic_dimension</span><span class="p">(</span><span class="n">topology</span><span class="o">=</span><span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;myoglobin/myo_noh_</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s1">.xtc&#39;</span><span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Distances&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="n">projection_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;step&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">},</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">frames</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">local_id</span><span class="p">))</span> 
+    <span class="n">state_ids</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">local_id</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">frames</span><span class="p">,</span> <span class="n">local_id</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">s</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.8</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Frames&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Local ID&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Time&quot;</span><span class="p">)</span>
+<span class="c1">#x[0].legend(bbox_to_anchor=(1.2, 0.5), loc=&quot;center right&quot;, title=&#39;Trajectory&#39;)       </span>
+
+<span class="c1">#####################</span>
+
+<span class="n">all_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">state_ids</span><span class="p">)</span>  <span class="c1"># common bin width</span>
+<span class="n">bins</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">all_values</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">all_values</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="mi">30</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">local_id</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">state_ids</span><span class="p">):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">local_id</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Local ID&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;#&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Frequency&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center right&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Trajectory&#39;</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>intrinsic_dimension.intrinsic_dimension - INFO - Built-in projection &quot;Distances&quot; computed.
+intrinsic_dimension.intrinsic_dimension - INFO - Computing local intrinsic dimension using estimator &quot;TwoNN&quot; (last simulation section = 100 frames).
+intrinsic_dimension.intrinsic_dimension - INFO - Built-in projection &quot;Distances&quot; computed.
+intrinsic_dimension.intrinsic_dimension - INFO - Computing local intrinsic dimension using estimator &quot;TwoNN&quot; (last simulation section = 100 frames).
+intrinsic_dimension.intrinsic_dimension - INFO - Built-in projection &quot;Distances&quot; computed.
+intrinsic_dimension.intrinsic_dimension - INFO - Computing local intrinsic dimension using estimator &quot;TwoNN&quot; (last simulation section = 100 frames).
+intrinsic_dimension.intrinsic_dimension - INFO - Built-in projection &quot;Distances&quot; computed.
+intrinsic_dimension.intrinsic_dimension - INFO - Computing local intrinsic dimension using estimator &quot;TwoNN&quot; (last simulation section = 100 frames).
+intrinsic_dimension.intrinsic_dimension - INFO - Built-in projection &quot;Distances&quot; computed.
+intrinsic_dimension.intrinsic_dimension - INFO - Computing local intrinsic dimension using estimator &quot;TwoNN&quot; (last simulation section = 100 frames).
+intrinsic_dimension.intrinsic_dimension - INFO - Built-in projection &quot;Distances&quot; computed.
+intrinsic_dimension.intrinsic_dimension - INFO - Computing local intrinsic dimension using estimator &quot;TwoNN&quot; (last simulation section = 100 frames).
+</pre></div>
+</div>
+<img alt="../_images/0c2a3e952e2d55b8cf131a1e0a14b869ccab7e292626a6c4775c59b72aba219b.png" src="../_images/0c2a3e952e2d55b8cf131a1e0a14b869ccab7e292626a6c4775c59b72aba219b.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">mean_all</span><span class="p">,</span> <span class="n">mean_last</span><span class="p">,</span> <span class="n">local_id</span> <span class="o">=</span> <span class="n">intrinsic_dimension</span><span class="p">(</span><span class="n">topology</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_300.xtc&#39;</span><span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Distances&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">)</span>
+
+<span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">local_id</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">local_id</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;teal&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Time (frames)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">local_id</span><span class="p">)</span> <span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">local_id</span><span class="p">)</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Local ID&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Instantaneous Intrinsic Dimension&quot;</span><span class="p">)</span>
+<span class="c1">#plt.grid(True)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>intrinsic_dimension.intrinsic_dimension - INFO - Built-in projection &quot;Distances&quot; computed.
+intrinsic_dimension.intrinsic_dimension - INFO - Computing global intrinsic dimension using estimator &quot;TwoNN&quot; (last simulation section = 100 frames).
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ValueError</span><span class="g g-Whitespace">                                </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">mean_all</span><span class="p">,</span> <span class="n">mean_last</span><span class="p">,</span> <span class="n">local_id</span> <span class="o">=</span> <span class="n">intrinsic_dimension</span><span class="p">(</span><span class="n">topology</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_300.xtc&#39;</span><span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Distances&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">local_id</span><span class="p">))</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="ne">ValueError</span>: not enough values to unpack (expected 3, got 2)
+</pre></div>
+</div>
+</div>
+</div>
+<h4><p style=' color:MediumVioletRed;' >Example 7</h4>   <br>
+<p>Using multiple, indipendent trajectory. In this case, with varying temperatures.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">proj</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;dihedrals&#39;</span><span class="p">:</span><span class="s1">&#39;psi&#39;</span><span class="p">}</span> <span class="c1">#changed default angles to compute</span>
+<span class="n">temperatures</span><span class="o">=</span><span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">340</span><span class="p">,</span> <span class="mi">380</span><span class="p">,</span> <span class="mi">420</span><span class="p">,</span> <span class="mi">460</span><span class="p">,</span> <span class="mi">500</span><span class="p">]</span>
+<span class="n">results</span><span class="o">=</span><span class="p">[]</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">temperatures</span><span class="p">:</span> <span class="c1">#using verbose=False to remove multiple logging infos</span>
+    <span class="n">global_all</span><span class="p">,</span> <span class="n">gid100</span> <span class="o">=</span> <span class="n">intrinsic_dimension</span><span class="p">(</span><span class="n">topology</span><span class="o">=</span><span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;myoglobin/myo_noh_</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1">.xtc&#39;</span><span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Dihedrals&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;global&#39;</span> <span class="p">,</span> <span class="n">projection_kwargs</span><span class="o">=</span><span class="n">proj</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+        <span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="n">t</span><span class="p">,</span>
+        <span class="s1">&#39;mean_all&#39;</span><span class="p">:</span> <span class="n">global_all</span><span class="p">,</span>
+        <span class="s1">&#39;mean_last&#39;</span><span class="p">:</span> <span class="n">gid100</span><span class="p">,</span>
+            <span class="p">})</span>
+<span class="n">results</span><span class="o">=</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">color_vec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">temperatures</span><span class="p">))</span>
+<span class="n">color</span> <span class="o">=</span> <span class="n">cm</span><span class="o">.</span><span class="n">RdYlBu_r</span><span class="p">(</span><span class="n">color_vec</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">t</span><span class="p">,</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span> <span class="n">color</span><span class="p">):</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">t</span><span class="p">][</span><span class="s1">&#39;mean_all&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1"> K&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Temperature (K)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">temperatures</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="nb">min</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;mean_all&#39;</span><span class="p">])</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;mean_all&#39;</span><span class="p">])</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Global ID&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Global Intrinsic Dimension&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s2">&quot;center right&quot;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Temperature (K)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">_</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/f7853db8c87861630353a7fda47db64fb72ee7d29b75365c52a04fd0cad53c16.png" src="../_images/f7853db8c87861630353a7fda47db64fb72ee7d29b75365c52a04fd0cad53c16.png" />
+</div>
+</div>
+<h4><p style=' color:MediumVioletRed;' >Example 8</h4>   <br> 
+Plotting protein's ID by sections. <br>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span> <span class="o">=</span> <span class="n">section_id</span><span class="p">(</span><span class="n">topology</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_300.xtc&#39;</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">5</span> <span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Dihedrals&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">)</span>
+
+<span class="c1">#IGNORE (remove matplotlib info warning)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;INFO&#39;</span><span class="p">)</span>
+<span class="n">mlogger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
+<span class="n">mlogger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span> <span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;instantaneous&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span> <span class="c1">#length of the simulation is the same for every section</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdPu</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)))</span>
+<span class="c1"># ===== PLOT 1 =====</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">row</span><span class="p">),</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">iterrows</span><span class="p">(),</span> <span class="n">colors</span><span class="p">):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;instantaneous&#39;</span><span class="p">],</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (frames)&quot;</span><span class="p">)</span>
+<span class="n">all_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s2">&quot;instantaneous&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">all_values</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">all_values</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Local ID&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Instantaneous Intrinsic Dimension&quot;</span><span class="p">)</span>
+
+<span class="c1"># ===== PLOT 2 =====</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">),</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]),</span> <span class="n">colors</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">results</span><span class="p">[(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">start</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">end</span><span class="p">)][</span><span class="s1">&#39;entire simulation&#39;</span><span class="p">]</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">c</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span> <span class="n">s</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Window index&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;entire simulation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;entire simulation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Averaged Local Intrinsic Dimension&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">():</span>
+    <span class="n">tick</span><span class="o">.</span><span class="n">set_rotation</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
+<span class="n">handles</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_legend_handles_labels</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.10</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center right&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="s1">&#39;small&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Window index&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>intrinsic_dimension.section_id - INFO - Protein has 153 amino acids. Slicing in 28 windows of 15 amino acids each and 5 aminos stride.
+intrinsic_dimension.section_id - INFO - Last 3 amino acids will be ingored.
+intrinsic_dimension.section_id - INFO - Computing local Intrinsic Dimension from Dihedrals.
+</pre></div>
+</div>
+<img alt="../_images/3564a682ce5623f91ba46418ee04d3c206381a63a3c03626722c510e02ee9809.png" src="../_images/3564a682ce5623f91ba46418ee04d3c206381a63a3c03626722c510e02ee9809.png" />
+</div>
+</div>
+<h4><p style=' color:MediumVioletRed;' >Example 9</h4>
+<p>Plotting protein ID's from multiple MD simulations (different temperatures) divided by window.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temperatures</span> <span class="o">=</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">340</span><span class="p">,</span> <span class="mi">380</span><span class="p">,</span> <span class="mi">420</span><span class="p">,</span> <span class="mi">460</span><span class="p">,</span> <span class="mi">500</span><span class="p">]</span>
+<span class="n">results</span><span class="o">=</span><span class="p">[]</span>
+
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">temperatures</span><span class="p">:</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">section_id</span><span class="p">(</span><span class="n">topology</span><span class="o">=</span><span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;myoglobin/myo_noh_</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1">.xtc&#39;</span><span class="p">,</span> <span class="n">window_size</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">stride</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Dihedrals&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+<span class="n">combined_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">combined_results</span><span class="p">[</span><span class="s2">&quot;window&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">combined_results</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">combined_results</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
+
+<span class="n">grouped_data</span> <span class="o">=</span> <span class="n">combined_results</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;window&#39;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;entire simulation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">grouped_data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature $T$ (K)&#39;</span><span class="p">,</span><span class="s1">&#39;Window&#39;</span><span class="p">:</span> <span class="s1">&#39;window&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pivot_data</span> <span class="o">=</span> <span class="n">grouped_data</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;Temperature $T$ (K)&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;window&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;entire simulation&#39;</span><span class="p">)</span>
+<span class="n">ordered_cols</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">pivot_data</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">pivot_data</span> <span class="o">=</span> <span class="n">pivot_data</span><span class="p">[</span><span class="n">ordered_cols</span><span class="p">]</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span> 
+<span class="n">_</span><span class="o">=</span><span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">pivot_data</span><span class="p">,</span> <span class="n">cmap</span> <span class="o">=</span> <span class="s2">&quot;Purples&quot;</span><span class="p">,</span> <span class="n">annot</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span><span class="n">fmt</span><span class="o">=</span><span class="s2">&quot;.2f&quot;</span><span class="p">,</span> <span class="n">cbar_kws</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;label&#39;</span><span class="p">:</span> <span class="s1">&#39;Intrinsic dimension&#39;</span><span class="p">})</span> <span class="c1">#, square=True</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Temperature (K)&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Window&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s2">&quot;Global Intrinsic Dimension&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">_</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/6dadec97a5cdb6948eb71882b6f9c638f361c15864f1748e36fe2c31d9130d3d.png" src="../_images/6dadec97a5cdb6948eb71882b6f9c638f361c15864f1748e36fe2c31d9130d3d.png" />
+</div>
+</div>
+<h4><p style=' color:MediumVioletRed;' >Example 10</h4>   <br> 
+<p>Plotting protein's ID by secondary structure. <br></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">results</span><span class="p">,</span> <span class="n">secStr</span> <span class="o">=</span> <span class="n">secondary_structure_id</span><span class="p">(</span><span class="n">topology</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span> <span class="o">=</span> <span class="s1">&#39;myoglobin/myo_noh_300.xtc&#39;</span><span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Dihedrals&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;local&#39;</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+
+<span class="c1">#IGNORE (remove matplotlib info warning)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="s1">&#39;INFO&#39;</span><span class="p">)</span>
+<span class="n">mlogger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;matplotlib&#39;</span><span class="p">)</span>
+<span class="n">mlogger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span> <span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="p">)</span>
+<span class="n">time</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;instantaneous&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]))</span> <span class="c1">#length of the simulation is the same for every secondary str</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gist_rainbow</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">cmap</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">)))</span>
+<span class="c1"># ===== PLOT 1 =====</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">row</span><span class="p">),</span> <span class="n">color</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">iterrows</span><span class="p">(),</span> <span class="n">colors</span><span class="p">):</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;instantaneous&#39;</span><span class="p">],</span><span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Time (frames)&quot;</span><span class="p">)</span>
+<span class="n">all_values</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;instantaneous&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">all_values</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">all_values</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.15</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Local ID&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Instantaneous Intrinsic Dimension&quot;</span><span class="p">)</span>
+<span class="c1"># ===== PLOT 2 =====</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="n">end</span><span class="p">),</span> <span class="n">c</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">],</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]),</span> <span class="n">colors</span><span class="p">):</span>
+    <span class="n">label</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">start</span><span class="si">}</span><span class="s1">-</span><span class="si">{</span><span class="n">end</span><span class="si">}</span><span class="s1">&#39;</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">results</span><span class="p">[(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;start&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">start</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;end&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">end</span><span class="p">)][</span><span class="s1">&#39;entire simulation&#39;</span><span class="p">]</span>
+    <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">value</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="n">c</span><span class="p">,</span> <span class="n">edgecolor</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="n">label</span> <span class="o">=</span> <span class="n">label</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Secondary Structure Index&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;entire simulation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">()</span> <span class="o">-</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;entire simulation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">+</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Averaged Local Intrinsic Dimension&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">get_xticklabels</span><span class="p">():</span>
+    <span class="n">tick</span><span class="o">.</span><span class="n">set_rotation</span><span class="p">(</span><span class="mi">45</span><span class="p">)</span>
+<span class="c1">#handles, labels = ax[1].get_legend_handles_labels()</span>
+<span class="c1">#fig.legend(handles, labels,bbox_to_anchor=(1.10, 0.5), loc=&#39;center right&#39;, fontsize=&#39;small&#39;, title=&#39;Sec. Str. Index&#39;)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>intrinsic_dimension.secondary_structure_id - INFO - Secondary structures considered: Coil (C), Strand (E) and Helix (H).
+intrinsic_dimension.secondary_structure_id - INFO - Computing local Intrinsic Dimension from Dihedrals.
+intrinsic_dimension.secondary_structure_id - WARNING - Skipping segment 58-58: at least two residues per segment are required.
+</pre></div>
+</div>
+<img alt="../_images/d974dd7f4429b2283e6a6ad6bfcf080b926dccb4e72504638c5a409aae487e0e.png" src="../_images/d974dd7f4429b2283e6a6ad6bfcf080b926dccb4e72504638c5a409aae487e0e.png" />
+</div>
+</div>
+<h4><p style=' color:MediumVioletRed;' >Example 11</h4>   <br>
+Plotting protein ID's from multiple MD simulations (different temperatures) divided by secondary structure.<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">temperatures</span> <span class="o">=</span> <span class="p">[</span><span class="mi">300</span><span class="p">,</span> <span class="mi">340</span><span class="p">,</span> <span class="mi">380</span><span class="p">,</span> <span class="mi">420</span><span class="p">,</span> <span class="mi">460</span><span class="p">,</span> <span class="mi">500</span><span class="p">]</span>
+<span class="n">ss_types</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">]</span>
+<span class="n">ss_colors</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;H&#39;</span><span class="p">:</span> <span class="s1">&#39;mediumvioletred&#39;</span><span class="p">,</span> <span class="s1">&#39;E&#39;</span><span class="p">:</span> <span class="s1">&#39;steelblue&#39;</span><span class="p">,</span> <span class="s1">&#39;C&#39;</span><span class="p">:</span> <span class="s1">&#39;khaki&#39;</span><span class="p">}</span>
+<span class="n">ss_assignments</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">residue_numbers</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">temperatures</span><span class="p">:</span>
+    <span class="n">result</span><span class="p">,</span> <span class="n">ss_table</span> <span class="o">=</span> <span class="n">secondary_structure_id</span><span class="p">(</span><span class="n">topology</span><span class="o">=</span><span class="s1">&#39;myoglobin/myo_noh_1dwr_tip4p.pdb&#39;</span><span class="p">,</span> <span class="n">trajectory</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;myoglobin/myo_noh_</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s1">.xtc&#39;</span><span class="p">,</span> <span class="n">projection_method</span><span class="o">=</span><span class="s1">&#39;Dihedrals&#39;</span><span class="p">,</span> <span class="n">id_method</span><span class="o">=</span><span class="s1">&#39;global&#39;</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>   
+    <span class="k">if</span> <span class="n">residue_numbers</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">residue_numbers</span> <span class="o">=</span> <span class="n">ss_table</span><span class="p">[</span><span class="s1">&#39;resid index&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">ss_assignments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">ss_table</span><span class="p">[</span><span class="s1">&#39;sec str type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="c1"># ===== PLOT 1: Secondary Structure Assignments =====</span>
+<span class="n">ss_to_num</span> <span class="o">=</span> <span class="p">{</span><span class="n">ss</span><span class="p">:</span> <span class="n">i</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">ss</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ss_types</span><span class="p">)}</span>
+<span class="n">num_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">ss_to_num</span><span class="p">[</span><span class="n">ss</span><span class="p">]</span> <span class="k">for</span> <span class="n">ss</span> <span class="ow">in</span> <span class="n">row</span><span class="p">]</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">ss_assignments</span><span class="p">])</span>
+<span class="n">cmap</span> <span class="o">=</span> <span class="n">ListedColormap</span><span class="p">([</span><span class="n">ss_colors</span><span class="p">[</span><span class="n">ss</span><span class="p">]</span> <span class="k">for</span> <span class="n">ss</span> <span class="ow">in</span> <span class="n">ss_types</span><span class="p">])</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">num_data</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="s1">&#39;auto&#39;</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">extent</span><span class="o">=</span><span class="p">[</span><span class="n">residue_numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">residue_numbers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">temperatures</span><span class="p">)</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">])</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">residue_numbers</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">residue_numbers</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">+</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">temperatures</span><span class="p">)</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">):</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">residue_numbers</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">temperatures</span><span class="p">)))</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">t</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">temperatures</span><span class="p">])</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Residue Number&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Residue Secondary Structure by Temperature&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>  
+
+<span class="n">legend_elements</span> <span class="o">=</span> <span class="p">[</span><span class="n">plt</span><span class="o">.</span><span class="n">Rectangle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">ss_colors</span><span class="p">[</span><span class="n">ss</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="n">ss</span><span class="p">)</span> <span class="k">for</span> <span class="n">ss</span> <span class="ow">in</span> <span class="n">ss_types</span><span class="p">]</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">handles</span><span class="o">=</span><span class="n">legend_elements</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">1.02</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Secondary Structure&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">)</span>
+
+<span class="c1"># ===== PLOT 2: Intrinsic Dimension Heatmap =====</span>
+<span class="n">combined_results</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">results</span><span class="p">,</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">combined_results</span><span class="p">[</span><span class="s2">&quot;window&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">combined_results</span><span class="p">[</span><span class="s2">&quot;start&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;-&quot;</span> <span class="o">+</span> <span class="n">combined_results</span><span class="p">[</span><span class="s2">&quot;end&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">))</span>
+<span class="n">grouped_data</span> <span class="o">=</span> <span class="n">combined_results</span><span class="o">.</span><span class="n">groupby</span><span class="p">([</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;window&#39;</span><span class="p">],</span> <span class="n">as_index</span><span class="o">=</span><span class="kc">False</span><span class="p">)[</span><span class="s1">&#39;entire simulation&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+<span class="n">grouped_data</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;temperature&#39;</span><span class="p">:</span> <span class="s1">&#39;Temperature $T$ (K)&#39;</span><span class="p">,</span> <span class="s1">&#39;Window&#39;</span><span class="p">:</span> <span class="s1">&#39;window&#39;</span><span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">pivot_data</span> <span class="o">=</span> <span class="n">grouped_data</span><span class="o">.</span><span class="n">pivot</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="s1">&#39;Temperature $T$ (K)&#39;</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="s1">&#39;window&#39;</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="s1">&#39;entire simulation&#39;</span><span class="p">)</span>
+<span class="n">ordered_cols</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">pivot_data</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">w</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">pivot_data</span> <span class="o">=</span> <span class="n">pivot_data</span><span class="p">[</span><span class="n">ordered_cols</span><span class="p">]</span>
+<span class="n">x_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pivot_data</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">y_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">pivot_data</span><span class="o">.</span><span class="n">index</span><span class="p">)</span><span class="o">+</span><span class="mf">0.5</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">heatmap</span> <span class="o">=</span> <span class="n">ax2</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">x_edges</span><span class="p">,</span> <span class="n">y_edges</span><span class="p">,</span> <span class="n">pivot_data</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>  <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;YlGn&#39;</span><span class="p">,</span>  <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;white&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pivot_data</span><span class="o">.</span><span class="n">index</span><span class="p">)):</span>
+    <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pivot_data</span><span class="o">.</span><span class="n">columns</span><span class="p">)):</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">pivot_data</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="n">j</span><span class="p">]</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>  <span class="c1"># Only plot non-NaN values</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">j</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">value</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">va</span><span class="o">=</span><span class="s2">&quot;center&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pivot_data</span><span class="o">.</span><span class="n">columns</span><span class="p">)))</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xticklabels</span><span class="p">(</span><span class="n">pivot_data</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pivot_data</span><span class="o">.</span><span class="n">index</span><span class="p">)))</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">([</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">temp</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">temp</span> <span class="ow">in</span> <span class="n">pivot_data</span><span class="o">.</span><span class="n">index</span><span class="p">])</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Global Intrinsic Dimension&#39;</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Window Index&quot;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">cbar</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">heatmap</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax2</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+<span class="n">cbar</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Intrinsic Dimension&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">supylabel</span><span class="p">(</span><span class="s1">&#39;Temperature (K)&#39;</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="mf">0.01</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="../_images/5bf41d81a1d63daa62738d769a752491356e64e50c305c6d9226e47c73e90482.png" src="../_images/5bf41d81a1d63daa62738d769a752491356e64e50c305c6d9226e47c73e90482.png" />
+</div>
+</div>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, Irene Cazzaniga.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(false);
+      });
+  </script>
+    <!-- Theme Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-XXXXXXXXXX', {
+          'anonymize_ip': false,
+      });
+    </script> 
+
+</body>
+</html>

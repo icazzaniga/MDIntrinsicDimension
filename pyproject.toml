@@ -41,6 +41,15 @@ dev = [
     "jupyter",
 ]
 
+docs = [
+    "sphinx",
+    "furo",          # optional, clean modern theme
+    "nbsphinx",      # for rendering notebooks
+    "myst-parser",   # for Markdown support (optional)
+    "sphinx-autodoc-typehints"  # nice for type-annotated APIs
+]
+
 [project.urls]
 "Homepage" = "https://github.com/icazzani/IntrinsicDimension"
 "Issue Tracker" = "https://github.com/icazzani/IntrinsicDimension/issues"
+

@@ -1,0 +1,82 @@
+intrinsic_dimension 
+============================
+
+This function estimates the intrinsic dimension (ID) over an entire MD system.
+
+.. autofunction:: intrinsic_dimension.intrinsic_dimension
+
+Usage Example
+-------------
+
+.. code-block:: python
+
+   from intrinsic_dimension import intrinsic_dimension
+
+   result = intrinsic_dimension(
+       topology='villin/2F4K.pdb',
+       trajectory='villin/2F4K_F.xtc',
+       projection_method='Dihedrals',
+       id_method='TwoNN'
+   )
+
+   print(result)
+
+.. code-block:: text
+
+   {'estimated_dimension': 5.32, 'method': 'TwoNN', 'projection': 'Dihedrals'} ###SOSTITUIREE
+
+Requirements
+------------
+
+- At least **101 frames** must be present in the trajectory (n > 100).
+- The data matrix shape is `n_frames × m_features`, with `m ≥ 2`.
+
+Projection Methods
+------------------
+
+Supported MoleculeKit projection methods:
+
+- `"Coordinate"`
+- `"Dihedrals"` *
+- `"Distance"` *
+- `"Plumed2"`
+- `"Sasa"`
+- `"Shell"`
+- `"SphericalCoordinate"`
+
+\* `"Dihedrals"` and `"Distances"` are implemented via custom functions to allow flexible atom selection, angle types, and transformation (e.g., `sincos`).
+
+ID Estimators
+-------------
+
+You can use any estimator from `scikit-dimension`. However, **some estimators may fail** on complex MD data. We recommend using:
+
+- `"TwoNN"` (default) — robust and stable
+
+Custom Usage (Molecule Input)
+-----------------------------
+
+You can also pass a `Molecule` object directly:
+
+.. code-block:: python
+
+   mol = Molecule('villin/2F4K.pdb')
+   mol.read('villin/2F4K_F.xtc')
+
+   result = intrinsic_dimension(mol=mol, projection_method='Dihedrals', id_method='local')
+
+Using Extra Projection Parameters
+---------------------------------
+
+#SPIEGARE MEGLIO COME VANNO USATI
+
+.. code-block:: python
+
+   proj = {'atomsel': 'name CA', 'refmol': mol}
+
+   result = intrinsic_dimension(
+       mol=mol,
+       projection_method='Coordinate',
+       id_method='global',
+       projection_kwargs=proj
+   )

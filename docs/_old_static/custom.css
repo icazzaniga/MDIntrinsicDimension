@@ -1,0 +1,332 @@
+
+
+.wy-nav-top {
+  background-color: #000066;
+  height: 5rem;
+  font-size: normal;
+  font-weight: bold;
+  padding: 1cm;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  
+}
+.wy-nav-content { max-width: none;}
+.wy-side-nav-search { background-color: #000066 }
+.wy-side-nav-search input[type="text"] { border-width: 0cm }
+.wy-side-nav-search input[type="text"] { 
+    border-width: 0; 
+    border-radius: 20px;
+    padding: 6px 12px;
+}
+
+/* Custom classes */
+.small { font-size:40% }
+.smaller, .pr { font-size:70% }
+
+
+/* Custom classes with bootstrap buttons */
+
+.tutorial,
+.tutorial:visited,
+.tutorial:hover
+{
+    text-decoration: underline;   
+    font-weight: bold;
+    padding: 2px 5px;
+    white-space: nowrap;
+    max-width: 100%;
+    background: IndianRed;
+    border: solid 1px darkorange;
+    border-radius: .25rem;
+    font-size: 75%;
+    font-family: FontAwsome;
+    color: #6b6b6d;
+    overflow-x: auto;
+    box-sizing: border-box;
+}
+
+
+/* Formatting of RTD markup: rubrics and sidebars and admonitions */
+
+/* rubric */
+.rst-content p.rubric {
+    margin-bottom: 6px;
+    font-weight: normal;
+}
+.rst-content p.rubric::after { content: ":" }
+
+/* sidebar */
+.rst-content .sidebar {
+    /* margin: 0px 0px 0px 12px; */
+    padding-bottom: 0px;
+}
+.rst-content .sidebar p {
+    margin-bottom: 12px;
+}
+.rst-content .sidebar p,
+.rst-content .sidebar ul,
+.rst-content .sidebar dl {
+    font-size: 13px;
+}
+
+/* less space after bullet lists in admonitions like warnings and notes */
+.rst-content .section .admonition ul {
+    margin-bottom: 6px;
+}
+
+
+/* Code: literals and links */
+
+.rst-content tt.literal,
+.rst-content code.literal {
+    color: #6b6b6d;
+}
+/* slim font weight for non-link code */
+.rst-content tt:not(.xref),
+.rst-content code:not(.xref),
+.rst-content *:not(a) > tt.xref,
+.rst-content *:not(a) > code.xref,
+.rst-content a > tt.xref,
+.rst-content a > code.xref,
+.rst-content dl:not(.docutils) a > tt.xref,
+
+
+/* Just one box for annotation code for a less noisy look */
+
+.rst-content .annotation {
+    padding: 2px 5px;
+    background-color: white;
+    border: 1.5px solid #CCFF00;
+}
+.rst-content .annotation tt,
+.rst-content .annotation code {
+    padding: 0 0;
+    background-color: transparent;
+    border: 0 solid transparent;
+}
+
+
+/* Parameter lists */
+
+.rst-content dl:not(.docutils) dl dt {
+    /* mimick numpydoc’s blockquote style */
+    font-weight: normal;
+    background: none transparent;
+    border-left: none;
+    margin: 0 0 12px;
+    padding: 3px 0 0;
+    font-size: 100%;
+}
+
+.rst-content dl:not(.docutils) dl dt code {
+    font-size: 100%;
+    font-weight: normal;
+    background: none transparent;
+    border: none;
+    padding: 0 2px;
+}
+
+.rst-content dl:not(.docutils) dl dt a.reference>code {
+    text-decoration: underline;
+}
+
+/* Mimick rubric style used for other headings */
+.rst-content dl:not(.docutils) dl > dt {
+    font-weight: bold;
+    background: none transparent;
+    border-left: none;
+    margin: 0 0 12px;
+    padding: 3px 0 0;
+    font-size: 100%;
+}
+/* Parameters contain <strong> parts and don’t need bold font */
+.rst-content dl.field-list dl > dt { font-weight: unset }
+/* Add colon between return tuple element name and type */
+.rst-content dl:not(.docutils) dl > dt .classifier::before { content: ' : ' }
+
+/* Function headers */
+
+.rst-content dl:not(.docutils) dt {
+    background: #4285F4;
+    color: whitesmoke;
+    border-top: solid 3px ;
+}
+
+.rst-content .section ul li p:last-child {
+   margin-bottom: 0;
+   margin-top: 0;
+}
+
+/* Copy buttons */
+a.copybtn {
+    position: absolute;
+    top: -6.5px;
+    right: 0px;
+    width: 1em;
+    height: 1em;
+    padding: .15em;
+	opacity: .4;
+	transition: opacity 0.5s;
+}
+
+
+/* Remove prompt line numbers */
+.nbinput > :first-child,
+.nboutput > :first-child {
+    min-width: 0 !important;
+}
+
+/* Adjust width of navigation bar on mobile */
+@media screen and (max-width: 768px) {
+	.header-bar {
+		      display: none;
+	}
+
+	.wy-nav-content-wrap {
+		      margin-left: 0px;
+	}
+
+	.wy-nav-side {
+		      width: 300px;
+	}
+
+	.wy-nav-side.shift {
+    	    max-width: 320px;
+    }
+
+	/* Fix sidebar adjust */
+	.rst-versions {
+          width: 40%;
+          max-width: 320px;
+	}
+}
+
+/* Handle landscape */
+@media screen and (min-width: 377px) {
+  .wy-nav-content-wrap.shift {
+    left: 320px;
+  }
+}
+
+/* === Sidebar Panel === */
+
+
+
+.wy-nav-side {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 320px;
+  background-color: #000066; 
+  color: whitesmoke;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.wy-side-nav-search {
+  background-color: whitesmoke; /* match sidebar */
+  color: whitesmoke;
+  padding: 3em;
+}
+
+.wy-side-nav-search input[type="text"] {
+  border-width: 0;
+  background: whitesmoke;
+  color: #6b6b6d;
+}
+
+/* === Sidebar Links === */
+.wy-menu-vertical a {
+  color: whitesmoke; 
+  text-decoration: none;
+  display: block;
+  padding: 0.4rem 1rem;
+}
+
+.wy-menu-vertical a:hover {
+  background-color: #000066;
+  color: #CCFF00; 
+}
+
+.wy-menu-vertical .caption {
+  font-weight: bold;
+  color: #4285F4; 
+  padding: 0.5rem 1rem 0.3rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.wy-menu-vertical li.current > a {
+  color: #CCFF00; /* Lime */
+  font-weight: bold;
+}
+
+/* === Main Content Area === */
+.wy-nav-content-wrap {
+  margin-left: 320px;
+
+}
+
+.wy-nav-content {
+  max-width: 1200px;
+  padding: 2rem;
+  background-color: whitesmoke;
+  color: #6b6b6d;
+}
+
+/* === Remove Top Nav Links === */
+div.related,
+nav#rellinks,
+nav#breadcrumbs {
+  display: none;
+}
+
+/* === Footer === */
+footer, div.footer {
+  color: #6b6b6d;
+  font-size: 0.9em;
+  text-align: center;
+}
+
+/* Function headers */
+
+.rst-content dl:not(.docutils) dt {
+    background: #edf0f2;
+    color: #6b6b6d;
+    border-top: solid 3px #4285F4;
+}
+
+.rst-content .section ul li p:last-child {
+   margin-bottom: 0;
+   margin-top: 0;
+}
+
+/* Copy buttons */
+a.copybtn {
+    position: absolute;
+    top: -6.5px;
+    right: 0px;
+    width: 1em;
+    height: 1em;
+    padding: .15em;
+	opacity: .4;
+	transition: opacity 0.5s;
+}
+
+/* === Responsive Layout === */
+@media screen and (max-width: 768px) {
+  .wy-nav-content-wrap {
+    margin-left: 0;
+  }
+
+  .wy-nav-side {
+    width: 320px;
+  }
+}

@@ -5,7 +5,7 @@ import numpy as np
 
 def compute_projections(mol, projection_method, **kwargs):
     '''
-    Computes molecular projections (features) from a MoleculeKit `Molecule` object.
+    Computes projections from MD simulation using a MoleculeKit `Molecule` object.
 
     Supports distance-based and dihedral-based features for downstream analysis such as 
     dimensionality reduction or intrinsic dimension estimation.
@@ -22,16 +22,16 @@ def compute_projections(mol, projection_method, **kwargs):
         Extra arguments specific to the projection method:
 
         For 'Distances':
-            sele : str, default='protein and name CA'
+            sele : str, default='name CA'
                 Atom selection string (VMD format).
             step : int, default=1
-                Subsampling step over selected atoms.
+                Specifies after how many sele consider an atom in the computation.
             metric : str, default='distances'
                 Either 'distances' or 'contacts'.
 
         For 'Dihedrals':
             dihedrals : tuple of str, default=('phi', 'psi')
-                Dihedral angles to compute.
+                Dihedrals angles to compute.
             sincos : bool, default=False
                 If True, return sine and cosine of angles instead of degrees.
 
@@ -46,6 +46,7 @@ def compute_projections(mol, projection_method, **kwargs):
     ValueError
         If input molecule is empty or projection method is invalid.
     '''
+    
     #check if non empty
     num_frames = getattr(mol, 'numFrames', None)
     num_atoms = getattr(mol, 'numAtoms', None)
@@ -56,11 +57,11 @@ def compute_projections(mol, projection_method, **kwargs):
     
 
     if projection_method == 'Distances':
-        sele = kwargs.get('sele', 'protein and name CA')   ###########
+        sele = kwargs.get('sele', 'name CA')   
         step = kwargs.get('step', 1)
         metric_type = kwargs.get('metric', 'distances') #default is distances
         if metric_type not in ('distances', 'contacts'):
-            raise ValueError(f'Invalid metric type: {metric_type}. Use 'distances' or 'contacts'.')
+            raise ValueError(f'Invalid metric type: {metric_type}. Use "distances" or "contacts".')
         all_atoms = mol.atomselect(sele, indexes=True)
         
         atoms = all_atoms[0::step]
@@ -78,7 +79,7 @@ def compute_projections(mol, projection_method, **kwargs):
         
         #sel1 = 'protein and name CA'
         #sel2 = 'protein and name CA'
-        met = distance.MetricDistance(sel1=sel1, sel2=sel2,
+        met = distance.MetricDistances(sel1=sel1, sel2=sel2,
                                     metric=metric_type, periodic='selections') #also contacts
         projection = met.project(mol)
         return projection
@@ -86,8 +87,8 @@ def compute_projections(mol, projection_method, **kwargs):
     elif projection_method == 'Dihedrals':
         dihedrals = kwargs.get('dihedrals', ('phi', 'psi'))
         sincos = kwargs.get('sincos', False)
-        angles = Dihedral.proteinDihedrals(mol=mol, dih=dihedrals)
-        met = MetricDihedral(dih=angles, sincos=sincos)
+        angles = Dihedral.proteinDihedrals(mol=mol, sel = 'all', dih=dihedrals)
+        met = MetricDihedral(dih=angles, sincos=sincos, protsel= 'all')
         projection = met.project(mol)
         return projection
         
