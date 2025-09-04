@@ -5,11 +5,14 @@ __pycache__/
 *.pyd
 *.egg-info/
 *.egg
+.*.xtc*
 .env/
 .env*/ 
 env/
 venv/
+bin/
 .ipynb_checkpoints/
+docs/_build/
 
 # OS
 .DS_Store
