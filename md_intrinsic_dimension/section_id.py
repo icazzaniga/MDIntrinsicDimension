@@ -1,4 +1,4 @@
-from .intrinsic_dimension import *
+from .md_intrinsic_dimension import *
 import logging
 import numpy as np
 import pandas as pd

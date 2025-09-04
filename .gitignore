@@ -6,6 +6,8 @@ __pycache__/
 *.egg-info/
 *.egg
 .*.xtc*
+docs/examples/NTL9/
+docs/examples/villin/
 .env/
 .env*/ 
 env/
