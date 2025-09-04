@@ -6,7 +6,7 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'IntrinsicDimension'
+project = 'MDIntrinsicDimension'
 copyright = '2025, Irene Cazzaniga'
 author = 'Irene Cazzaniga'
 release = '0.1.0'
