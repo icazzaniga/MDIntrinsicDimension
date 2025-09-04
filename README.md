@@ -2,9 +2,10 @@
 
 This package estimates the intrinsic dimension (ID) of high-dimensional data from complex biological systems (e.g., protein molecular dynamics), helping you reduce data to a lower-dimensional manifold while preserving essential information.
 
-It includes two primary functions:
-- `intrinsic_dimension`: computes the ID over the entire MD system.
-- `section_intrinsic_dimension`: computes the ID for specific segments of the protein.
+It includes three primary functions:
+- `intrinsic_dimension`: Computes the ID over the entire MD system.
+- `section_id`: Computes ID in sliding, fixed-length windows along the protein chain.
+- `secondary_structure_id`: Compute ID separately for each secondary structure element.
 
 ## Getting started
 
@@ -35,6 +36,8 @@ This package relies on:
 > - "Shell"     
 > - "SphericalCoordinate".
 
+> **Warning:** <br> `section_id` and `secondary_structure_id` require respectively `window_size` and the secondary structure element to be longer than 1 residue to be able to compute projections and consequently ID. In case of secondary structures <= 1 ID is not computed but the structure is included in the DataFrames. 
+
 > **Note on Dihedrals and Distances** <br> These two projections are not directly called from MoleculeKit; instead, this package uses custom functions that accept additional parameters for more flexible analysis.
 
 > **Note on ID estimators:** <br>While all the scikit-dimension available estimators can, in principle, be used in this package, the complexity associated to a MD simulation can lead some of the estimators to failure. <br> We set `TwoNN` estimator as default as it has proven to be one of the most robust.
@@ -45,6 +48,6 @@ This package relies on:
 A [test notebook](examples/test.ipynb) is available in the `examples/` directory, including:
 - basic functions usage and data handling
 - topology and trajectory loading
-- Kwargs usage
+- **kwargs usage and examples
 - plotting.
 
