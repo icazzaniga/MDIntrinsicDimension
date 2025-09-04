@@ -62,7 +62,7 @@ The package supports many file formats, but we recommend using:
 
 .. attention::
 
-    **scikit-dimension** requires **at least 101 frames** in the trajectory.
+    **scikit-dimension** requires **at least 101 frames** of trajectory to repourpose a global estimator as local as the default neighbourhood is of 100 elements.
 
 
 Non-basic usage
@@ -111,6 +111,10 @@ In particular:
     intrinsic_dimension(topology = 'villin/2F4K.pdb', trajectory = 'villin/2F4K_F.xtc', 
     projection_method = 'Coordinate', projection_kwargs=proj)   
 
+.. attention::
+    The :mark:`projection_method` string must have the first letter of each word in upper case, the remaining in lower case.
+    
+
 .. important:: 
     The ID matrix must be of shape **n_frames x m_features** with n > 100 and m > 1.
     Accordingly, only the following MoleculeKit projection classes are supported:
@@ -137,7 +141,7 @@ In case of ``local`` ID estimation, the estimator identifies sub-regions of the 
  
 .. code-block:: python
     
-    #global or local id method
+    #global or local ID method
     intrinsic_dimension(topology = 'villin/2F4K.pdb', trajectory = 'villin/2F4K_F.xtc', 
             id_method = 'global')   
   

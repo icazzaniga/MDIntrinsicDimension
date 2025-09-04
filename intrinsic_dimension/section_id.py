@@ -15,7 +15,7 @@ logger.addHandler(handler)
 logger.propagate = False
 
 
-def section_id(topology=None, trajectory=None, mol=None, window_size=10, stride=1, projection_method='Distance', id_method='local', projection_kwargs=None, id_kwargs=None, verbose=True):
+def section_id(topology=None, trajectory=None, mol=None, window_size=10, stride=1, projection_method='Distances', id_method='local', projection_kwargs=None, id_kwargs=None, verbose=True):
     '''
     Computes intrinsic dimension (ID) on sliding residue windows across a protein trajectory.
     This function loads a protein trajectory and slices the protein into overlapping windows of fixed residue length. 
@@ -32,10 +32,10 @@ def section_id(topology=None, trajectory=None, mol=None, window_size=10, stride=
         A pre-loaded MoleculeKit `Molecule` object. If provided, `topology` and `trajectory` are ignored.
     window_size : int, default=10, number of amino acids to be considered in each window.
     stride : int, default=1, number of amino acids between one window and the following.
-    projection_method : str or callable, default='Distance'
+    projection_method : str or callable, default='Distances'
         Method for generating the molecular projection. Can be one of:
-            - 'Distance' : pairwise distances or number of contacts between selected atoms.
-            - 'Dihedral' : selected backbone or side-chain dihedral angles.
+            - 'Distances' : pairwise distances or number of contacts between selected atoms.
+            - 'Dihedrals' : selected backbone or side-chain dihedral angles.
             - MoleculeKit metric class (excluded metrics: Rmsd, SecondaryStructure, TMscore).
     id_method : str, default='local'
         Method for computing intrinsic dimension. One of:
@@ -44,7 +44,7 @@ def section_id(topology=None, trajectory=None, mol=None, window_size=10, stride=
     projection_kwargs : dict, optional
         Parameters passed according to the projection method. 
         Defaults:
-            For "Distance"
+            For "Distances"
             - sele : str, atom selection string (default="name CA").
             - step : int, subsampling interval (default=1).
             - metric : str, either "distances" or "contacts" (default="distances");

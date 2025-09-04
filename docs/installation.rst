@@ -1,10 +1,6 @@
 Installation
 ============
 
-.. note::
-   
-   fare modello con ntl9 proteina, bisogna rifare le traiettorie. provato anche con BBA ma non distingue bene le ss
-   citare correttamente deshaw nei notebook o dove altro serve.
 This package uses pip-uv to create an isolated environment.
 
 To install:

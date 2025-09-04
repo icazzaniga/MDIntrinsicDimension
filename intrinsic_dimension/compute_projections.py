@@ -79,7 +79,7 @@ def compute_projections(mol, projection_method, **kwargs):
         
         #sel1 = 'protein and name CA'
         #sel2 = 'protein and name CA'
-        met = distance.MetricDistances(sel1=sel1, sel2=sel2,
+        met = distance.MetricDistance(sel1=sel1, sel2=sel2,
                                     metric=metric_type, periodic='selections') #also contacts
         projection = met.project(mol)
         return projection

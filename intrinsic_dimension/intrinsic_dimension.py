@@ -15,7 +15,7 @@ logger.propagate = False
 
 
 
-def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_method = 'Distance', id_method = 'local', projection_kwargs = None, id_kwargs = None, verbose=True):
+def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_method = 'Distances', id_method = 'local', projection_kwargs = None, id_kwargs = None, verbose=True):
     '''
     Performs projection of molecular dynamics data followed by intrinsic dimension (ID) estimation.
     This function loads a protein trajectory or a Molecule object from MoleculeKit, computes a projection,
@@ -138,7 +138,7 @@ def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_
                     f'from module "{module_name}": {e}'
                     )
     else:
-        raise TypeError('projection_method must be a string referring to a built-in or custom MoleculeKit projection class.')
+        raise TypeError('projection_method must be a string referring to a built-in or custom MoleculeKit projection class. \n The first letter of each word should be in upper case.')
 
 #AGGIUNGERE CHECK ARRAY
 

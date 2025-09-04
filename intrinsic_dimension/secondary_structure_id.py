@@ -14,7 +14,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.propagate = False
 
-def secondary_structure_id(topology= None, trajectory=None, mol = None, simplified=True, projection_method = 'Distance', id_method = 'local', projection_kwargs = None, id_kwargs = None, verbose=True):
+def secondary_structure_id(topology= None, trajectory=None, mol = None, mol_ref=Molecule, simplified=True, projection_method = 'Distances', id_method = 'local', projection_kwargs = None, id_kwargs = None, verbose=True):
     '''
     Computes intrinsic dimension (ID) estimation on contiguous secondary structure elements identified from a protein trajectory.
     This function loads a molecular trajectory, identifies consecutive residues with the same secondary structure assignment (using DSSP via MoleculeKit), 
@@ -28,6 +28,8 @@ def secondary_structure_id(topology= None, trajectory=None, mol = None, simplifi
         Path to the trajectory file (e.g., .dcd, .xtc). Required if `mol` is not provided.
     mol : Molecule, optional
         A pre-loaded MoleculeKit `Molecule` object. If provided, `topology` and `trajectory` are ignored.
+    mol_ref : Molecule
+        A pre-loaded MoleculeKit  `Molecule` object of ONE FRAME from which DSSP is computed.
     simplified : bool, default=True
         Whether to use the simplified DSSP classification.
         If True (simplified DSSP):
@@ -98,7 +100,7 @@ def secondary_structure_id(topology= None, trajectory=None, mol = None, simplifi
     if verbose:
         logger.setLevel(logging.INFO)
     else:
-        logger.setLevel(logging.CRITICAL + 1) #does not show intrinsic_dimension looped
+        logger.setLevel(logging.ERROR) #does not show intrinsic_dimension looped
     
     # ----DEFAULT KWARGS PARAMETERS ----
     projection_kwargs = projection_kwargs or {}
@@ -113,6 +115,18 @@ def secondary_structure_id(topology= None, trajectory=None, mol = None, simplifi
         
         mol = Molecule(topology, validateElements = False) #ref:PeriodicTable raises error with dummy atoms i. e. M
         mol.read(trajectory)
+    
+    if mol_ref is None:
+        raise FileNotFoundError(f'Missing reference structure for DSSP computation. Please provide a one frame MoleculeKit Molecule object.')
+    else:
+        if mol_ref.numFrames > 1:
+            raise ValueError('ref_mol must be 1 frame long. Please load only the topology in this MoleculeKit Molecule object.')
+        if mol.numAtoms != mol_ref.numAtoms:
+            raise ValueError(f'mol_ref and mol have a different number of atoms.')
+        keys = ['name', 'resid', 'resname', 'chain', 'segid']
+        for key in keys:
+            if not (mol.get(key) == mol_ref.get(key)).all():
+                raise ValueError(f'mol and mol_ref differ in {key}.')
 
     if simplified == True:
         logger.info(f'Secondary structures considered: Coil (C), Strand (E) and Helix (H).')
@@ -122,11 +136,15 @@ def secondary_structure_id(topology= None, trajectory=None, mol = None, simplifi
 
     logger.info(f'Computing {id_method} Intrinsic Dimension from {projection_method}.')
 
-    met = mss.MetricSecondaryStructure(sel = "all", simplified = simplified, integer = False) #integer converts letters to numbers
-    projection = met.project(mol)
-    indexes = mol.get('resid', sel='name CA')
-    resnames = mol.get('resname', sel='name CA')  #work only on protein, ignore ligands, cofactors, glycans, ...
-     
+    met = mss.MetricSecondaryStructure(sel = 'protein', simplified = simplified, integer = False) #integer converts letters to numbers
+    
+    projection = met.project(mol_ref)
+
+    #projection = met.project(mol) #x: frames; y: ss
+    indexes = mol_ref.get('resid', sel='name CA')
+    resnames = mol_ref.get('resname', sel='name CA')  #work only on protein, ignore ligands, cofactors, glycans, ...
+    
+
     data = {'resid index': indexes, 'resname': resnames, 'sec str type': projection[0]}
     secStr_table = pd.DataFrame(data)
 
@@ -152,9 +170,9 @@ def secondary_structure_id(topology= None, trajectory=None, mol = None, simplifi
     results =[]
     for start, end, ss in secStr_sequence:
         if (end - start) < 1: #too short to compute any projection
-            logger.warning(f"Skipping segment {start}-{end}: at least two residues per segment are required.")
+            logger.warning(f'Skipping segment {start}-{end}: at least two residues per segment are required.')
             continue
-        resid_sele = f"resid {start} to {end}"
+        resid_sele = f'resid {start} to {end}'
         window_mol = mol.copy()
         window_mol.filter(resid_sele, _logger=False) ##
 
@@ -170,6 +188,7 @@ def secondary_structure_id(topology= None, trajectory=None, mol = None, simplifi
             'start': start,
             'end': end, 
             'sec str type': ss,
+            'window': window_mol.get('resid', 'name CA'),
             'entire simulation': all_sim,
             'last simulation': last, 
             'instantaneous': instantaneous, 
