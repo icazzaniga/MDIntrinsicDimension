@@ -1,24 +1,26 @@
 Installation
 ============
 
-This package uses pip-uv to create an isolated environment.
+We recommend `uv venv` to create an isolated environment and `uv pip` to install.
 
 To install:
 
 .. code-block:: bash
 
-   uv pip install git+git@github.com:icazzaniga/IntrinsicDimension.git
+   uv pip install git+https://github.com/giorginolab/MDIntrinsicDimension.git
 
 or:   
 
 .. code-block:: bash
 
-   git clone https://github.com/icazzaniga/IntrinsicDimension
+   git clone https://github.com/giorginolab/MDIntrinsicDimension.git
    uv pip install IntrinsicDimension
 
 
 Dependencies
 ------------
+
+These are automatically installed.
 
 - `MoleculeKit <https://software.acellera.com/moleculekit/>`_
 - `scikit-dimension <https://scikit-dimension.readthedocs.io/en/latest/>`_
