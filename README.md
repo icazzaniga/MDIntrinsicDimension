@@ -1,53 +1,56 @@
-# Intrinsic Dimension Computation over MD Trajectories.
+# MDIntrinsicDimension 
 
-This package estimates the intrinsic dimension (ID) of high-dimensional data from complex biological systems (e.g., protein molecular dynamics), helping you reduce data to a lower-dimensional manifold while preserving essential information.
+MDIntriniscDimension is a Python package for the estimatation of  the intrinsic dimension (ID) of high-dimensional data from, protein molecular dynamics, helping you reduce data to a lower-dimensional manifold while preserving essential information.
 
-It includes three primary functions:
-- `intrinsic_dimension`: Computes the ID over the entire MD system.
-- `section_id`: Computes ID in sliding, fixed-length windows along the protein chain.
-- `secondary_structure_id`: Compute ID separately for each secondary structure element.
+It includes three functions and as many analysis modes:    
 
-## Getting started
+- `intrinsic_dimension`: ID on whole molecule. 
+- `section_id`: ID on fixed sliding window along protein's sequence.    
+- `secondary_structure_id`: ID on contiguous secondary structure elements.  
 
-This package uses pip-uv to create an isolated environment. <br>
-Installation:
-```sh
-uv pip install git+git@github.com:icazzaniga/IntrinsicDimension.git
-```
-To activate the environment, from within the main IntrinsicDimension directory:
-```sh
-source env/bin/activate
-```
-## Dependencies
+Installation
+============
 
-This package relies on:
-- [MoleculeKit projections](https://software.acellera.com/moleculekit/projections.html) for the computation of projections from MD trajectories. 
+We recommend `uv venv` to create an isolated environment and `uv pip` to install.
 
-- [scikit-dimension](https://scikit-dimension.readthedocs.io/en/latest/) to select the ID estimators.
+To install:
 
-## Warnings and notes
+.. code-block:: bash
 
-> **Warning:** <br> The ID matrix is of form `n_frames x m_features`, with `n > 100` and `m > 1`. <br> Only the following MoleculeKit projection classes are supported:
-> - "Coordinate"         
-> - "Dihedrals"        
-> - "Distance"
-> - "Plumed2"            
-> - "Sasa"    
-> - "Shell"     
-> - "SphericalCoordinate".
+   uv pip install git+https://github.com/icazzaniga/MDIntrinsicDimension.git
 
-> **Warning:** <br> `section_id` and `secondary_structure_id` require respectively `window_size` and the secondary structure element to be longer than 1 residue to be able to compute projections and consequently ID. In case of secondary structures <= 1 ID is not computed but the structure is included in the DataFrames. 
+or:   
 
-> **Note on Dihedrals and Distances** <br> These two projections are not directly called from MoleculeKit; instead, this package uses custom functions that accept additional parameters for more flexible analysis.
+.. code-block:: bash
 
-> **Note on ID estimators:** <br>While all the scikit-dimension available estimators can, in principle, be used in this package, the complexity associated to a MD simulation can lead some of the estimators to failure. <br> We set `TwoNN` estimator as default as it has proven to be one of the most robust.
+   git clone https://github.com/icazzaniga/MDIntrinsicDimension.git
+   uv pip install IntrinsicDimension
 
-> **Potential file format issues:** <br> MoleculeKit supports many trajectory and topology formats but may raise some parsing problems. <br> We suggest to work with `PDB` for topologies and `dcd` or `xtc` for trajectories. 
+Quick start
+=============
+ID can be computed as follows:
 
-## Usage
-A [test notebook](examples/test.ipynb) is available in the `examples/` directory, including:
-- basic functions usage and data handling
-- topology and trajectory loading
-- **kwargs usage and examples
-- plotting.
+.. code-block:: python
+    
+    #ID of the entire object
+    intrinsic_dimension(topology = 'villin/2f4k.pdb', trajectory = 'villin/2f4k_f1.xtc')
+
+    #ID per fixed windows
+    section_id(topology = 'villin/2f4k.pdb', trajectory = 'villin/2f4k_f1.xtc')  
+
+    #ID contiguous secondary structure elements
+    secondary_structure_id(topology = 'villin/2f4k.pdb', trajectory = 'villin/2f4k_f1.xtc')
+
+Any other parameter shared by the functions or specific for each, has a default.  
+Please refer to the `documentation<>_` and the `paper<>_` for detailed API and tutorials.
+
+Dependencies
+------------
+
+These are automatically installed.
+
+- `MoleculeKit <https://software.acellera.com/moleculekit/>`_
+- `scikit-dimension <https://scikit-dimension.readthedocs.io/en/latest/>`_
+- `Numpy <https://numpy.org/>`_
+- `Pandas <https://pandas.pydata.org/>`_
 

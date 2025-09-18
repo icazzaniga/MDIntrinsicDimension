@@ -13,7 +13,7 @@ In such cases, the actual dynamics of the system can be projected onto a lower-d
 The therm *Intrinsic Dimension* (ID) intuitively refers to the minimum number of variables needed to describe the essential structure of such a dataset.
 Under the manifold hypothesis, which assumes that high-dimensional data lie on a lower-dimensional manifold, ID estimation aims to determine the minimum dimensionality of said manifold. 
 
-This package is specifically designed to address this the ID estimation of proteins molecular dynamics simulations.
+This package is specifically designed to address the ID estimation of proteins molecular dynamics simulations.
 
 Workflow
 ^^^^^^^^^^^^^^^^^^^^^^^^
