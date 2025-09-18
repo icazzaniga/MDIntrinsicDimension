@@ -12,7 +12,7 @@ docs/examples/villin/
 .env*/ 
 env/
 venv/
-bin/
+extra/
 build/
 .ipynb_checkpoints/
 docs/_build/

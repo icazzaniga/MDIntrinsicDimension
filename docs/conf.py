@@ -41,7 +41,7 @@ html_theme_options = {
     'prev_next_buttons_location': 'bottom',
     'style_external_links': True,
     'vcs_pageview_mode': '',
-    'style_nav_header_background': '#CCFF00',
+    'style_nav_header_background': '#ceff99',
     'flyout_display': 'hidden',
     'version_selector': True,
     'language_selector': True,
@@ -53,6 +53,7 @@ html_theme_options = {
     'titles_only': False,
 }
 
+html_static_path = ["_static"]
 html_css_files = ["custom.css"]
 
 

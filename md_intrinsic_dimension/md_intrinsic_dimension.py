@@ -47,11 +47,13 @@ def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_
             - metric : str, either "distances" or "contacts" (default="distances").
             For "Dihedrals"
             - dihedrals : tuple of str, including phi, psi, chi1, .., chi5, omega (default=("psi","phi")).
-            - sincos : bool, return sin/cos of angles if True (default=True).
+            - sincos : bool, return sin/cos of angles if True (default=False).
     id_kwargs : dict, optional
         Parameters for intrinsic dimension estimation.
             - estimator : str, name of the estimator from scikit-dimension, including CorrInt, DANCo, ESS, FisherS, KNN, lPCA, MADA, MiND_ML, MLE, MOM, TLE, TwoNN (default="TwoNN").
             - last : int, number of frames to average over starting from the end of the simulation (default=100).
+        Additional keys are passed directly to the chosen estimator’s constructor. These should match the estimator’s parameter names in scikit-dimension.
+        For example:``{"estimator": "KNN", "k": 15, "last": 200}``
     verbose : bool, default=True
         If True, logging messages are shown. If False, suppress logger output.
 
@@ -95,8 +97,8 @@ def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_
     step = projection_kwargs.get('step', 1)
     dihedrals = projection_kwargs.get('dihedrals', ('phi', 'psi'))
     sincos = projection_kwargs.get('sincos', False)
-    estimator = id_kwargs.get('estimator','TwoNN')
-    last = id_kwargs.get('last', int(100))
+    estimator = id_kwargs.pop('estimator','TwoNN')
+    last = id_kwargs.pop('last', int(100))
 
         # Configure logger verbosity
     if verbose:
@@ -145,10 +147,10 @@ def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_
      # ID estimation mapping
     if id_method == 'local':
         logger.info(f'Computing {id_method} intrinsic dimension using estimator "{estimator}" (last simulation section = {last} frames).')
-        return  compute_local(projection=projection, estimator=estimator, last=last)
+        return  compute_local(projection=projection, estimator=estimator, last=last, **id_kwargs)
     if id_method == 'global':
         logger.info(f'Computing {id_method} intrinsic dimension using estimator "{estimator}" (last simulation section = {last} frames).')
-        return compute_global(projection=projection, estimator=estimator, last=last)
+        return compute_global(projection=projection, estimator=estimator, last=last, **id_kwargs)
     
     if id_method != 'local' and id_method != 'global':
         raise TypeError(

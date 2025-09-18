@@ -87,7 +87,7 @@ def compute_projections(mol, projection_method, **kwargs):
     elif projection_method == 'Dihedrals':
         dihedrals = kwargs.get('dihedrals', ('phi', 'psi'))
         sincos = kwargs.get('sincos', False)
-        angles = Dihedral.proteinDihedrals(mol=mol, sel = 'all', dih=dihedrals)
+        angles = Dihedral.proteinDihedrals(mol=mol, sel = 'protein', dih=dihedrals)
         met = MetricDihedral(dih=angles, sincos=sincos, protsel= 'all')
         projection = met.project(mol)
         return projection

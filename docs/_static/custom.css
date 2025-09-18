@@ -1,30 +1,34 @@
 /* #4C4CA6 #4C81FD #69FFDC #DCFF69 #F4914D #A64C4C */
 
-
-
-
 /*sidebar links color */
 .wy-menu-vertical a {
   color: #eeeeee;
 }
 /*sidebar links color when passing over */
 .wy-menu-vertical a:hover {
-  color: #CCFF00;
+  color: #e9ff99;
   background: transparent;
 }
-/*sidebar main titles */
+/* Sidebar main titles */
 .wy-menu-vertical .caption {
-  color:#4C81FD !important;
+  color: #C099F3 !important;  /* default color */
   font-weight: bold;
   text-transform: uppercase;
   padding: 0.5rem 1rem 0.2rem;
   letter-spacing: 0.5px;
 }
+
+/* Sidebar titles after click (active section) */
+.wy-menu-vertical .caption.current,
+.wy-menu-vertical li.current > .caption {
+  color: #6100e0 !important; 
+  background: transparent !important;
+}
 /*sidebar links color after clicking */
 .wy-menu-vertical li.current > a {
-  color: #CCFF00; /* Lime */
+  color: #A5CC21; /* Lime */
   font-weight: bold;
-  background: #404040 !important;
+  background: transparent !important;
 }
 
 .wy-nav-top .wy-nav-title {
@@ -34,9 +38,12 @@
 }
 
 /* Sidebar top project name text */
+.wy-side-nav-search {
+    background-color: #CeFF29;  /* your current green */
+}
 .wy-side-nav-search a,
 .wy-side-nav-search .icon-home {
-  color: #404040 !important;  /* teal, or your preferred color */
+  color: #404040 !important;  
   font-weight: bold;
   font-size: 1.2rem;
   text-decoration: none;
@@ -44,24 +51,24 @@
 
 /* Main page content links */
 .wy-nav-content a {
-  color: #4C81FD; /* teal — change to your brand color */
-  text-decoration: none; /* optional: remove underline */
+  color: #6100e0;  /* default purple */
+  text-decoration: none;
 }
 
 .wy-nav-content a:hover {
-  color: #4C4CA6; /* lime highlight */
+  color: #4E00B3;  /* keep your hover purple */
   text-decoration: underline;
 }
 
 .wy-nav-content a:visited {
-  color: #4C4CA6; /* optional: soft purple for visited */
+  color: #4E00B3;  /* darker purple after click */
 }
 
 /* 1. Inline code blocks: ``like_this`` */
 .rst-content code.literal,
 .rst-content tt.literal {
     background-color: white;
-    border: 1.5px solid #69FFDC; 
+    border: 2px solid  #A5CC21;
     color: black; 
     padding: 2px 6px;
     border-radius: 4px;
@@ -72,7 +79,7 @@
 .rst-content tt.xref {
     background-color: white;
     border: 3px solid #40404064; 
-    color: #F4914D;
+    color: #6100e0;
     padding: 2px 6px;
     border-radius: 4px;
     font-family: monospace;
@@ -83,7 +90,7 @@
 /* Custom highlighted words using :mark:`...` */
 .rst-content code.mark {
     background-color: white;
-    border: 2px solid #F4914D;
+    border: 2px solid #6100e0;
     color: black;
     padding: 2px 6px;
     border-radius: 4px;
@@ -92,22 +99,29 @@
 /*for ipynb*/
 .rst-content span.mark code {
     background-color: white;
-    border: 2px solid #F4914D;
+    border: 2px solid #A5CC21;
+    border-left: none !important;
     color: black;
     padding: 2px 6px;
     border-radius: 4px;
     font-family: monospace;
 }
 
-/* Python code blocks (highlighted with Pygments) */
-div.highlight-python, div.highlight > pre {
-  background-color: #ccff0014;  /* light background */
-  border: 2px solid #CCFF00;
-  padding: 0em;
-  border-radius: 0px;
-  overflow-x: auto;
+div.highlight {
+  border-left: none !important;         /* remove the stripe */
+  /* OR match your frame color: */
+  /* border-left: 2px solid #A5CC21 !important; */
+  background: transparent;              /* don’t let it override */
 }
 
+/* Python code blocks (highlighted with Pygments) */
+div.highlight-python, div.highlight > pre {
+  background-color: #e9ff9941;  /* light background */
+  border: 2px solid #A5CC21;
+  padding: 0em;
+  border-radius: 6px;
+  overflow-x: auto;
+}
 
 /* === Base Admonition Styling === */
 div.admonition {

@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-IntrinsicDimension - Intrinsic dimension estimation along molecular dynamics simulations
+MDIntrinsicDimension - Intrinsic dimension estimation along molecular dynamics simulations
 ==========================================================================================
 
 
@@ -17,37 +17,38 @@ This package is specifically designed to address this the ID estimation of prote
 
 Workflow
 ^^^^^^^^^^^^^^^^^^^^^^^^
-Provided a MD trajectory, the IntrinsicDimension package performs two things:
+Provided a MD trajectory, the **MDIntrinsicDimension** package performs two things:
 
 1. Computes the projection
 2. Estimates ID
 
-Projections are included in the ID estimation procedure as the initial step of dimensionality reduction to remove non-interesting movements such as global translations and rotations.
+Projections are included in the ID estimation procedure as the initial step of dimensionality reduction to remove non-interesting movements such as global- rigid-body translations and rotations.
 After this initial step, ID is computed.
 
 
 Functionalities
 ^^^^^^^^^^^^^^^^^^^^
 
-It includes three primary functions:    
+It includes three functions and as many analysis modes:    
 
-- `intrinsic_dimension`: computes the ID over the entire MD system. 
-- `section_id`: computes the ID on sub-sections of the protein.    
-- `secondary_structure_id`: computes the ID om each secondary structure of the protein individually.  
+- `intrinsic_dimension`: ID on whole molecule. 
+- `section_id`: ID on fixed sliding window along protein's sequence.    
+- `secondary_structure_id`: ID on contiguous secondary structure elements.  
  
 .. toctree::
    :maxdepth: 1
-   :caption: MAIN
+   :caption: TUTORIAL
    
    installation
    quickstart
-
+   villin_data.ipynb
 .. toctree::
    :maxdepth: 1 
-   :caption: TUTORIAL
+   :caption: EXAMPLES
    :hidden:
    
-   villin_data.ipynb
+
+
    villin_plots.ipynb
    NTL9_plots.ipynb
 

@@ -2,6 +2,9 @@
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.setuptools]
+packages = ["md_intrinsic_dimension"]
+
 [project]
 name = "MDIntrinsicDimension"
 version = "0.1.0"
@@ -27,6 +30,7 @@ dependencies = [
     "ipython",
     #"scikit-learn",
     "scikit-dimension",
+    "docutils==0.20.1", 
     #"rdkit-pypi",  # PyPI name for RDKit
     #"torch==2.0.1+cu118",  # Match your CUDA version
     #"torch-geometric",
