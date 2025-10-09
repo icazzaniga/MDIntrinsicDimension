@@ -52,7 +52,7 @@ html_theme_options = {
     'includehidden': True,
     'titles_only': False,
 }
-
+ 
 html_static_path = ["_static"]
 html_css_files = ["custom.css"]
 

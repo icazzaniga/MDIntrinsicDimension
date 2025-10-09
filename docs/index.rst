@@ -51,6 +51,11 @@ It includes three functions and as many analysis modes:
 
    villin_plots.ipynb
    NTL9_plots.ipynb
+   estimators.ipynb
+   projections.ipynb
+   rmsd.ipynb
+
+   
 
  
  
