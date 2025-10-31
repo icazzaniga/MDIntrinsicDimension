@@ -54,3 +54,13 @@ These are automatically installed.
 - [Numpy](https://numpy.org/)
 - [Pandas](https://pandas.pydata.org/)
 
+
+Maintainer notes
+================
+
+To build the docs, use
+
+    uv sync --all-extras
+    uv run make -C docs html
+    open docs/_build/html/index.html
+

@@ -30,7 +30,7 @@ dependencies = [
     "ipython",
     #"scikit-learn",
     "scikit-dimension",
-    "docutils==0.20.1", 
+    "docutils==0.20.1",
     #"rdkit-pypi",  # PyPI name for RDKit
     #"torch==2.0.1+cu118",  # Match your CUDA version
     #"torch-geometric",
@@ -50,6 +50,8 @@ docs = [
     "furo",          # optional, clean modern theme
     "nbsphinx",      # for rendering notebooks
     "myst-parser",   # for Markdown support (optional)
+    "myst-nb",
+    "sphinx-rtd-theme>=3.0.2",
     "sphinx-autodoc-typehints"  # nice for type-annotated APIs
 ]
 
