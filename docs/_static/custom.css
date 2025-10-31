@@ -99,7 +99,7 @@ nav.wy-nav-side {
 /* 1. Inline code blocks: ``like_this`` */
 .rst-content code.literal,
 .rst-content tt.literal {
-    background-color: #EFEFEF;
+    background-color: white;
     border: 2px solid #C099F3;
     color: black; 
     padding: 2px 6px;
@@ -110,7 +110,7 @@ nav.wy-nav-side {
 /* 2. Cross-reference roles (e.g. :confval:, :class:, :ref:) */
 .rst-content code.xref,
 .rst-content tt.xref {
-    background-color: #EFEFEF;
+    background-color: #ffffff;
     border: 3px solid #40404064; 
     color: #6100e0;
     padding: 2px 6px;
@@ -122,7 +122,7 @@ nav.wy-nav-side {
 
 /* 3. Custom highlighted words using :mark:`...` */
 .rst-content code.mark {
-    background-color: #EFEFEF;
+    background-color: #ffffff;
     border: 2px solid #6100e0;
     color: black;
     padding: 2px 6px;
@@ -133,8 +133,8 @@ nav.wy-nav-side {
 /* For :mark:`...` inside IPython cells */
 .rst-content span.mark code {
     background-color: #EFEFEF;
-    border: 2px solid #A5CC21;
-    border-left: none !important;
+    border: 2px solid #6100e0;
+    ;
     color: black;
     padding: 2px 6px;
     border-radius: 4px;

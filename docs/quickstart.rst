@@ -9,7 +9,7 @@ First, activate the environment:
 
    source env/bin/activate
 
-Then, in Python, import the package:
+Then, in Python, import the package and the functions:
 
 .. code-block:: python
 
@@ -30,28 +30,29 @@ At this point, ID can be computed as follows:
 
 Any other parameter shared by the functions or specific for each, has a default.  
 
-The shared parameters are: 
+These parameters are: 
 
 * :mark:`projection_method`, default "Distances" 
 * :mark:`id_method`, default "local" 
-* :mark:`projection_kwargs`, including:      
+* :mark:`projection_kwargs`, extra parameters including:      
    
     * ``sele``, default "name CA"    
     * ``step``, default 1     
     * ``metric``, default "distances" 
+    * Additional keys
 
 * :mark:`id_kwargs`, extra parameters including:  
     
-    * ``estimator``, allows to chose the estimator of desire (default "TwoNN").  
+    * ``estimator``, to select the estimator (default "TwoNN").  
     * ``last``, for more precise results, all the functions in the package allow the computation of ID on the last part of the trajectory (default "100").  
-    * Additional keys specific for the selected estimator, matching the parameters provided in `scikit-dimension <https://scikit-dimension.readthedocs.io/en/latest/>`_
+    * Additional keys
 
-In case of **section_id**: 
+In case of **section_id** specific parameters are: 
 
 * :mark:`window_size`, default 10
 * :mark:`stride`, default 1
 
-Wheras, for **secondary_structure_id**:
+Wheras, for **secondary_structure_id**, the specific parameter is:
 
 * :mark:`simplified`, default True
   
@@ -65,13 +66,14 @@ The package supports many file formats, but we recommend using:
 .. attention::
 
     **scikit-dimension** requires **at least 101 frames** of trajectory to repourpose a global estimator as local as the default neighbourhood is composed of 100 elements.
+    If this default parameter is not changed, be sure to have long enough simulation trajectories.
 
 
 Non-basic usage
 ----------------
 It is possible to use different parameters than the default ones defined above, for example:
 
-Load the moleculekit `Molecule` object outside the function
+1. Load the moleculekit `Molecule` object outside the function
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 .. code-block:: python
     
@@ -84,14 +86,14 @@ Load the moleculekit `Molecule` object outside the function
 
 It is also possible to change the default parameters as follows:
 
-Change :mark:`projection_method` and :mark:`projection_kwargs`.
+2. Change :mark:`projection_method` and :mark:`projection_kwargs`.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Projections are used as preliminary step for the reduction of the total dimension number by removing rigid body roto-translations.   
 
-Several projection types can be computed, relying on Moleculekit projection package avaialbility.
+Several projection types can be used, relying on `MoleculeKit projections <https://software.acellera.com/moleculekit/moleculekit.projections.html>`_ package avaialbility.
 
-The selected projection must be called as a string with the first letter in upper case:
+The selected projection must be called as a string with the first letter in upper case, the same way they are defined in MoleculeKit projections:
 
 .. code-block:: python
 
@@ -101,13 +103,15 @@ The selected projection must be called as a string with the first letter in uppe
 :mark:`projection_kwargs` is a optional input dictionary containing of parameters required by the selected :mark:`projection_method`.    
 Default values are provided for methods like ``Distances`` and ``Dihedrals`` (see *Important* below), which are not handled directly via MoleculeKit.    
 
-In particular:
+In particular, default values are:
    
     * ``sele``, default "name CA"    
     * ``step``, default 1     
     * ``metric``, default "distances" 
     * ``dihedrals``, default ("psi", "phi")
     * ``sincos``, default False
+
+These can be ignored if not necessary for the projection selected or overwritten.
 
 .. code-block:: python
 
@@ -123,11 +127,11 @@ In particular:
     projection_method = 'Coordinate', projection_kwargs=proj)   
 
 .. attention::
-    The :mark:`projection_method` string must have the first letter of each word in upper case, the remaining in lower case.
+    The :mark:`projection_method` string must have the first letter of each word in upper case, the remaining in lower case accordingly to the method definition.
     
 
 .. important:: 
-    The ID matrix must be of shape **n_frames x m_features** with *n* > 100 and *m* > 1.
+    The ID matrix must be of shape **n_frames x m_features** with *m* > 1.
     Accordingly, only the following MoleculeKit projection classes are supported:
 
     * "Coordinate",  
@@ -140,14 +144,14 @@ In particular:
     * "Shell",  
     * "SphericalCoordinate".
 
-    ``Distances`` and ``Dihedrals`` (plural) are modified functions of the MoleculeKit package that accept additional parameters for a more flexible analysis.
+    ``Distances`` and ``Dihedrals`` (plural) functions derived from the MoleculeKit projections module that accept additional parameters for a more flexible analysis.
     The singular form (``Distance`` and ``Dihedral``), still allow to use the original projection. 
 
-Change :mark:`id_method` and :mark:`id_kwargs`.
+3. Change :mark:`id_method` and :mark:`id_kwargs`.
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 :mark:`id_method` includes ``local``, ``global`` (default "local"). 
 
-In case of ``local`` ID estimation, the estimator identifies sub-regions of the dataset based on a shared local feature, in this case time, on which ID is computed.     
+In case of ``local`` ID estimation, the estimator identifies sub-regions of the dataset based on a shared local feature (in this case time) on which ID is computed.     
 ``global`` ID estimation consists in the computation of a single-summary value of ID for the entire system. For a thorought image of the system in MD, we suggest to use ``local``. 
  
 .. code-block:: python
@@ -161,6 +165,8 @@ In case of ``local`` ID estimation, the estimator identifies sub-regions of the 
     
     * ``estimator``, allows to chose the estimator of desire, default "TwoNN" (see *Important* below).  
     * ``last``, the package allow to exclude the initial, possibly non equilibrated, part of the trajectory, slicing from the end of the simulation (default "100").   
+
+It is possible to add extra keys to change the default parameters of the selected estimator, accordingly to `scikit-dimension <https://scikit-dimension.readthedocs.io/en/latest/>`_.
 
 .. code-block:: python
     

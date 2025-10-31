@@ -8,8 +8,9 @@ MDIntrinsicDimension - Intrinsic dimension estimation along molecular dynamics s
 
 
 Many biological datasets, such as those derived from molecular dynamics (MD) simulations, are described by high-dimensional feature vectors. 
-However, lots of these features are redundant, often due to correlations in the data. 
+However, lot of these features are redundant, often due to correlations in the data. 
 In such cases, the actual dynamics of the system can be projected onto a lower-dimensional manifold without significant loss of information. 
+
 The therm *Intrinsic Dimension* (ID) intuitively refers to the minimum number of variables needed to describe the essential structure of such a dataset.
 Under the manifold hypothesis, which assumes that high-dimensional data lie on a lower-dimensional manifold, ID estimation aims to determine the minimum dimensionality of said manifold. 
 
@@ -22,7 +23,7 @@ Provided a MD trajectory, the **MDIntrinsicDimension** package performs two thin
 1. Computes the projection
 2. Estimates ID
 
-Projections are included in the ID estimation procedure as the initial step of dimensionality reduction to remove non-interesting movements such as global- rigid-body translations and rotations.
+Projections are included in the ID estimation procedure as the initial step of dimensionality reduction to remove non-interesting movements such as global rigid-body translations and rotations.
 After this initial step, ID is computed.
 
 

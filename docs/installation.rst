@@ -7,13 +7,13 @@ To install:
 
 .. code-block:: bash
 
-   uv pip install git+https://github.com/icazzaniga/MDIntrinsicDimension.git
+   uv pip install git+https://github.com/giorginolab/MDIntrinsicDimension.git
 
 or:   
 
 .. code-block:: bash
 
-   git clone https://github.com/icazzaniga/MDIntrinsicDimension.git
+   git clone https://github.com/giorginolab/MDIntrinsicDimension.git
    uv pip install IntrinsicDimension
 
 
