@@ -15,10 +15,11 @@ venv/
 extra/
 build/
 .ipynb_checkpoints/
-docs/_build/
+_build/
 
 # OS
 .DS_Store
 
 # Jupyter
 *.ipynb_checkpoints/
+jupyter_execute/
