@@ -14,7 +14,7 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.propagate = False
 
-def secondary_structure_id(topology= None, trajectory=None, mol = None, mol_ref=Molecule, simplified=True, projection_method = 'Distances', id_method = 'local', projection_kwargs = None, id_kwargs = None, verbose=True):
+def secondary_structure_id(topology= None, trajectory=None, mol = None, mol_ref=None, simplified=True, projection_method = 'Distances', id_method = 'local', projection_kwargs = None, id_kwargs = None, verbose=True):
     '''
     Computes intrinsic dimension (ID) estimation on contiguous secondary structure elements identified from a protein trajectory.
     This function loads a molecular trajectory, identifies consecutive residues with the same secondary structure assignment (using DSSP via MoleculeKit), 

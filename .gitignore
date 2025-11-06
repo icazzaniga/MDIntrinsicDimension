@@ -17,6 +17,8 @@ build/
 .ipynb_checkpoints/
 _build/
 
+uv.lock
+
 # OS
 .DS_Store
 

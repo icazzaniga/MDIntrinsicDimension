@@ -29,6 +29,7 @@ dependencies = [
     "seaborn",
     "moleculekit",
     "ipython",
+    "mdtraj",
     #"scikit-learn",
     "scikit-dimension",
     "docutils==0.20.1",
