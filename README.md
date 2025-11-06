@@ -21,9 +21,17 @@ uv pip install git+https://github.com/icazzaniga/MDIntrinsicDimension.git
 or:   
 
 ```bash
-   git clone https://github.com/icazzaniga/MDIntrinsicDimension.git
-   uv pip install IntrinsicDimension
+git clone https://github.com/icazzaniga/MDIntrinsicDimension.git
+uv sync --all-groups
 ```
+
+Documentation
+=============
+
+Should be available at https://giorginolab.github.io/MDIntrinsicDimension/ .
+
+
+
 
 Quick start
 =============
@@ -55,12 +63,20 @@ These are automatically installed.
 - [Pandas](https://pandas.pydata.org/)
 
 
+
+Citation
+========
+
+Consider citing the package as follows:
+
+> I. Cazzaniga, T. Giorgino. MDIntrinsicDimension: Dimensionality-Based Analysis of Collective Modes of Macromolecules from Molecular Dynamics Trajectories. 
+
+
 Maintainer notes
 ================
 
 To build the docs, use
 
-    uv sync --all-extras
     uv run --only-group docs make -C docs html
     open docs/_build/html/index.html
 
