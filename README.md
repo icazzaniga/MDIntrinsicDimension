@@ -61,6 +61,6 @@ Maintainer notes
 To build the docs, use
 
     uv sync --all-extras
-    uv run make -C docs html
+    uv run --only-group docs make -C docs html
     open docs/_build/html/index.html
 

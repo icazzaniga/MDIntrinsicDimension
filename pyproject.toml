@@ -13,7 +13,8 @@ readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "MIT" }
 authors = [
-  { name = "Irene Cazzaniga", email = "irenecazzaniga@cnr.it" }
+  { name = "Irene Cazzaniga", email = "irenecazzaniga@cnr.it" },
+  { name = "Toni Giorgino", email = "toni.giorgino@cnr.it" }
 ]
 keywords = ["molecular-dynamics", "intrinsic-dimension", "machine-learning"]
 classifiers = [
@@ -38,7 +39,7 @@ dependencies = [
     #"requests",
 ]
 
-[project.optional-dependencies]
+[dependency-groups]
 dev = [
     "pytest",
     "ipython",

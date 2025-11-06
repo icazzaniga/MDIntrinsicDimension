@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install uv
-          uv sync --all-extras
+          uv run --only-group docs make -C docs html
       - name: Sphinx build
         run: |
           uv run make -C docs html
