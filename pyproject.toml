@@ -8,10 +8,10 @@ packages = ["md_intrinsic_dimension"]
 [project]
 name = "MDIntrinsicDimension"
 version = "0.1.0"
-description = "Package for intrinsic dimension analysis in molecular dynamics"
+description = "Package for intrinsic dimension analysis in molecular dynamics of proteins"
 readme = "README.md"
 requires-python = ">=3.11"
-license = { file = "MIT" }
+license = { file = "LICENSE.txt" }
 authors = [
   { name = "Irene Cazzaniga", email = "irenecazzaniga@cnr.it" },
   { name = "Toni Giorgino", email = "toni.giorgino@cnr.it" }
@@ -58,5 +58,6 @@ docs = [
 
 [project.urls]
 "Homepage" = "https://github.com/icazzani/MDIntrinsicDimension"
+"Documentation" = "https://giorginolab.github.io/MDIntrinsicDimension"
 "Issue Tracker" = "https://github.com/icazzani/MDIntrinsicDimension/issues"
 
