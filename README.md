@@ -56,14 +56,10 @@ Example notebooks
 
 The documentation includes example notebooks that demonstrate the package’s features and reproduce (and extend) the figures from the paper. To run these notebooks, you have two options:
 
-1.	Use the original DESRES MD trajectories of villin and NTL9 from Lindorff-Larsen et al. [1]. These must be downloaded, pre-processed, and placed in the `examples` directory.
+1.	Use the original DESRES MD trajectories of villin and NTL9 by [Lindorff-Larsen et al.](http://science.sciencemag.org/content/334/6055/517). These must be downloaded, pre-processed, and placed in the `examples` directory.
 2.	Use the provided pre-computed data tables, available in CSV format, which require no trajectory downloads.
 
-The pre-processing steps are described at the top of the [Villin Headpiece](docs/villin_plots.ipynb) and [NTL9](docs/NTL9_plots.ipynb) notebooks. The same notebooks also appear in the online documentation under the “Examples” section, with some code cells hidden for clarity. The full source code is included in the notebooks themselves.
-
-> [1] Kresten Lindorff-Larsen, Stefano Piana, Ron O. Dror, and David  E. Shaw, "How Fast-Folding Proteins Fold," Science, vol. 334, no. 6055, 2011, pp. 517-520. http://science.sciencemag.org/content/334/6055/517
-
-
+The pre-processing steps are described at the top of the [Villin Headpiece](docs/villin_plots.ipynb) and [NTL9](docs/NTL9_plots.ipynb) notebooks. The same notebooks also appear in the online [documentation](https://giorginolab.github.io/MDIntrinsicDimension/) under the Examples section, with some code hidden for readability. The full source code is included in the notebooks themselves and associated files.
 
 
 
