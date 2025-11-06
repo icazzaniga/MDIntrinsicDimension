@@ -45,6 +45,7 @@ dev = [
     "pytest",
     "ipython",
     "jupyter",
+    "jupyter-ruff",
 ]
 
 docs = [
