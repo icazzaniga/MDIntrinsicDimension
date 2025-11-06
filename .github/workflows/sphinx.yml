@@ -16,10 +16,9 @@ jobs:
       - name: Install dependencies
         run: |
           pip install uv
-          uv run --only-group docs make -C docs html
       - name: Sphinx build
         run: |
-          uv run make -C docs html
+          uv run --only-group docs make -C docs html
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
