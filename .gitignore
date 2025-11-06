@@ -8,6 +8,8 @@ __pycache__/
 .*.xtc*
 docs/examples/NTL9/
 docs/examples/villin/
+docs/examples/ntl9_data/
+docs/examples/villin_data/
 .env/
 .env*/ 
 env/
