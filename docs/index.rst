@@ -43,13 +43,13 @@ It includes three functions and as many analysis modes:
    installation
    quickstart
    villin_data.ipynb
+
 .. toctree::
    :maxdepth: 1 
    :caption: EXAMPLES
    :hidden:
-   
 
-
+   examples_foreword.ipynb
    villin_plots.ipynb
    NTL9_plots.ipynb
    estimators.ipynb
