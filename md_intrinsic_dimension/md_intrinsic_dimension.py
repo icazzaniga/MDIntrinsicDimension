@@ -1,7 +1,8 @@
 from .compute_projections import *
 from .compute_id import *
 import logging
-from moleculekit.molecule import Molecule 
+from moleculekit.molecule import Molecule
+from moleculekit.projections.projection import Projection
 import os 
 import importlib 
 
@@ -29,11 +30,13 @@ def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_
         Path to the trajectory file (e.g., .dcd, .xtc). Required if `mol` is not provided.
     mol : Molecule, optional
         A pre-loaded MoleculeKit `Molecule` object. If provided, `topology` and `trajectory` are ignored.
-    projection_method : str or callable, default='Distances'
+    projection_method : str, callable, or numpy.ndarray, default='Distances'
         Method for generating the molecular projection. Can be one of:
             - 'Distances' : pairwise distances or number of contacts between selected atoms.
             - 'Dihedrals' : selected backbone or side-chain Dihedrals angles.
-            - MoleculeKit metric class (excluded metrics: Rmsd, SecondaryStructure, TMscore).
+            - A MoleculeKit metric class name (excluded metrics: Rmsd, SecondaryStructure, TMscore).
+            - A MoleculeKit Projection object (projection_kwargs is ignored) 
+            - A numpy array, result of a prj.project(mol) operation (trajectory, mol and projection_kwargs are ignored)
     id_method : str, default='local'
         Method for computing intrinsic dimension. One of:
             - 'local' : compute frame-wise ID (instantaneous) and averaged.
@@ -139,23 +142,30 @@ def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_
                 f'Failed to import or use custom projection class "{class_name}" '
                     f'from module "{module_name}": {e}'
                     )
+
+    elif isinstance(projection_method, Projection):
+        projection = projection_method.project(mol)
+        logger.info("Projecting using the provided Projection object")
+
+    elif isinstance(projection_method, np.ndarray):
+        projection = projection_method
+        logger.info("Using the results of a project() operation provided as an array of shape "+str(projection.shape))
+
     else:
-        raise TypeError('projection_method must be a string referring to a built-in or custom MoleculeKit projection class. \n The first letter of each word should be in upper case.')
+        raise TypeError('projection_method must be a string referring to a MoleculeKit Projection class, an array, or a Projection object. If string, the first letter of each word should be capitalized.')
 
 #AGGIUNGERE CHECK ARRAY
 
-     # ID estimation mapping
+    # ID estimation mapping
     if id_method == 'local':
         logger.info(f'Computing {id_method} intrinsic dimension using estimator "{estimator}" (last simulation section = {last} frames).')
-        return  compute_local(projection=projection, estimator=estimator, last=last, **id_kwargs)
+        out = compute_local(projection=projection, estimator=estimator, last=last, **id_kwargs)
     if id_method == 'global':
         logger.info(f'Computing {id_method} intrinsic dimension using estimator "{estimator}" (last simulation section = {last} frames).')
-        return compute_global(projection=projection, estimator=estimator, last=last, **id_kwargs)
-    
-    if id_method != 'local' and id_method != 'global':
+        out = compute_global(projection=projection, estimator=estimator, last=last, **id_kwargs)
+    else:
         raise TypeError(
             f'id_method must be "local" or "global", got {id_method} instead.'
         )
 
-
-###############
+    return out
