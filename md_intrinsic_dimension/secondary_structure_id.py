@@ -180,7 +180,6 @@ def secondary_structure_id(topology= None, trajectory=None, mol = None, mol_ref=
 
         if id_method == 'local':
             all_sim, last, instantaneous = intrinsic_dimension(mol=window_mol, projection_method=projection_method, id_method='local', projection_kwargs=projection_kwargs, id_kwargs=id_kwargs, verbose = False)
-            local_id_str = ','.join(map(str, instantaneous)) #for csv formatting
         else:  # global
             all_sim, last = intrinsic_dimension(mol=window_mol, projection_method=projection_method, id_method='global', projection_kwargs=projection_kwargs, id_kwargs=id_kwargs, verbose = False)
             instantaneous = []
@@ -192,7 +191,7 @@ def secondary_structure_id(topology= None, trajectory=None, mol = None, mol_ref=
             'window': window_mol.get('resid', 'name CA'),
             'entire simulation': all_sim,
             'last simulation': last, 
-            'instantaneous': local_id_str, 
+            'instantaneous': instantaneous, 
         })        
     results = pd.DataFrame(results)
     return results, secStr_table
