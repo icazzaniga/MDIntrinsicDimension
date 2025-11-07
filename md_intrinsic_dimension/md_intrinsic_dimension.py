@@ -160,7 +160,7 @@ def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_
     if id_method == 'local':
         logger.info(f'Computing {id_method} intrinsic dimension using estimator "{estimator}" (last simulation section = {last} frames).')
         out = compute_local(projection=projection, estimator=estimator, last=last, **id_kwargs)
-    if id_method == 'global':
+    elif id_method == 'global':
         logger.info(f'Computing {id_method} intrinsic dimension using estimator "{estimator}" (last simulation section = {last} frames).')
         out = compute_global(projection=projection, estimator=estimator, last=last, **id_kwargs)
     else:
