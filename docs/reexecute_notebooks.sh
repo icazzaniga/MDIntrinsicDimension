@@ -10,13 +10,13 @@
 #SBATCH --mem=32G
 
 # Load base Python (pick the version you used for uv)
-module load python/3.11.6
+#module load python/3.11.6
 
 # Activate your uv-managed environment
-source ../env/bin/activate
+#source ../env/bin/activate
 
 # Run a notebook (with outputs saved into the same .ipynb)
 for f in estimators projections rmsd NTL9_plots villin_plots villin_data ; do 
-  jupyter  nbconvert --execute --inplace $f.ipynb
+  uv run jupyter  nbconvert --execute --inplace $f.ipynb
 done
 
