@@ -1,15 +1,10 @@
 Quick start
 =============
-Basic Usange
+
+Basic Usage
 ----------------
 
-First, activate the environment:
-
-.. code-block:: bash
-
-   source env/bin/activate
-
-Then, in Python, import the package and the functions:
+After activating the environment, import the package and the functions:
 
 .. code-block:: python
 

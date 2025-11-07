@@ -14,7 +14,7 @@ or:
 .. code-block:: bash
 
    git clone https://github.com/giorginolab/MDIntrinsicDimension.git
-   uv pip install IntrinsicDimension
+   uv sync
 
 
 Dependencies
