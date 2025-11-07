@@ -67,3 +67,5 @@ rst_prolog = """
 .. role:: mark(code)
    :class: mark
 """
+
+exclude_patterns = ["examples", "maintainer"]
