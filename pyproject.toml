@@ -46,16 +46,18 @@ dev = [
     "ipython",
     "jupyter",
     "jupyter-ruff",
+    "jupyterlab>=4.4.7",
 ]
 
 docs = [
     "sphinx",
-    "furo",          # optional, clean modern theme
-    "nbsphinx",      # for rendering notebooks
-    "myst-parser",   # for Markdown support (optional)
+    "furo", # optional, clean modern theme
+    "nbsphinx", # for rendering notebooks
+    "myst-parser", # for Markdown support (optional)
     "myst-nb",
-    "sphinx-rtd-theme>=3.0.2",
-    "sphinx-autodoc-typehints"  # nice for type-annotated APIs
+    "sphinx-rtd-theme>=3.0.2", # nice for type-annotated APIs
+    "sphinx-autodoc-typehints",
+    "matplotlib>=3.10.6",
 ]
 
 [project.urls]
