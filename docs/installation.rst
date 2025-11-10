@@ -17,13 +17,9 @@ or:
    uv sync
 
 
-Dependencies
-------------
+Environment Activation
+----------------------
 
-These are automatically installed.
+The environment may be activated with :mark:`source .venv/bin/activate` or implicitly by :mark:`uv run python`.
 
-- `MoleculeKit <https://software.acellera.com/moleculekit/>`_
-- `scikit-dimension <https://scikit-dimension.readthedocs.io/en/latest/>`_
-- `Numpy <https://numpy.org/>`_
-- `Pandas <https://pandas.pydata.org/>`_
 

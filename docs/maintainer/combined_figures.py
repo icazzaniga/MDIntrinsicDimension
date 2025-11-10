@@ -1,3 +1,6 @@
+#python merge_figures.py
+#change parameters to work on different proteins
+
 from md_intrinsic_dimension import intrinsic_dimension, section_id, secondary_structure_id
 import numpy as np
 import pandas as pd
@@ -32,6 +35,7 @@ plt.rcParams.update({
 	'lines.markersize': 8,
 })
 
+#CHANGE HERE TO ADAPT TO DIFFERENT PROTEINS
 
 folder= 'villin'
 topology = '2f4k.pdb'
@@ -41,12 +45,12 @@ projection_method='Dihedrals'
 
 
 ##################################### instantaneous ID and RMSD #####################################
-ref = Molecule(f'../{folder}/topology')
+ref = Molecule(f'../examples/{folder}/{topology}')
 data = []
 for state in states:
-    mean_all, mean_last, local_id = intrinsic_dimension(topology=f'../{folder}/{topology}', trajectory=f'../{folder}/{trajectory}_{state}.xtc', id_method = 'local', projection_method=projection_method, verbose=False)
+    mean_all, mean_last, local_id = intrinsic_dimension(topology=f'../examples/{folder}/{topology}', trajectory=f'../examples/{folder}/{trajectory}_{state}.xtc', id_method = 'local', projection_method=projection_method, verbose=False)
     mol = ref
-    mol.read(trajectory+f'_{state}.xtc')
+    mol.read(f'../examples/{folder}/{trajectory}_{state}.xtc')
     met=rmsd.MetricRmsd(ref, trajrmsdstr= 'protein and name CA')
     rmsd_values=met.project(mol)
 	
@@ -55,7 +59,6 @@ for state in states:
 	  'mean_all': mean_all,
 	  'mean_last': mean_last,
       'local_id': local_id,
-	  #'rmsf' : rmsf,
 	  'rmsd': rmsd_values})
 data = pd.DataFrame(data)
 data["folded"] = data["trajectory"].str.startswith("f")
@@ -124,7 +127,7 @@ plt.show()
 #sections
 all_results = []
 for s in states: 
-    results = section_id(topology=f'../{folder}/{topology}', trajectory=f'../{folder}/{trajectory}_{s}.xtc', window_size = 15, stride = 3, projection_method=projection_method, id_method='local', verbose=False)
+    results = section_id(topology=f'../examples/{folder}/{topology}', trajectory=f'../examples/{folder}/{trajectory}_{s}.xtc', window_size = 15, stride = 3, projection_method=projection_method, id_method='local', verbose=False)
     results["trajectory"] = s  
     all_results.append(results)
 results = pd.concat(all_results, ignore_index=True)
@@ -137,11 +140,11 @@ states = ['u0','u1', 'u2', 'f0', 'f1', 'f2']
 all_results_ss = []
 ss_assignments = []
 residue_numbers = None
-mol_ref_ss = Molecule(f'/../{folder}/{topology}') #same topology, else change
+mol_ref_ss = Molecule(f'../examples/{folder}/{topology}') #same topology, else change
 
 #sec structures
 for s in states:
-    results_ss, ss_table = secondary_structure_id(topology=f'../{folder}/{topology}', trajectory=f'../{folder}/{trajectory}_{s}.xtc', mol_ref = mol_ref_ss, simplified=True, projection_method=projection_method, id_method='local' , verbose=False)
+    results_ss, ss_table = secondary_structure_id(topology=f'../examples/{folder}/{topology}', trajectory=f'../examples/{folder}/{trajectory}_{s}.xtc', mol_ref = mol_ref_ss, simplified=True, projection_method=projection_method, id_method='local' , verbose=False)
     results_ss['trajectory'] = s  
     if residue_numbers is None:
         residue_numbers = ss_table['resid index'].values
@@ -170,8 +173,7 @@ for i, trajectory in enumerate(unique_trajectories):
     x_positions = np.arange(len(x_labels))
     x_shifted = x_positions + shifts[i]
     y = subset['entire simulation'].values
-    y_std = subset['instantaneous'].apply(lambda x: np.std(list(map(float, x.split(',')))))
-
+    y_std = subset['instantaneous'].apply(np.std).values
     ax1.errorbar(x_shifted, y, yerr=y_std, fmt='o',color=colors.colors[i], markeredgecolor='black',ecolor='black', elinewidth=0.8, capsize=3, markersize=8,label=trajectory)
 
 
@@ -198,7 +200,7 @@ for i, trajectory in enumerate(unique_trajectories):
     x_positions = np.arange(len(subset))
     x_shifted = x_positions + shifts[i]
     y = subset['entire simulation'].values
-    y_std = subset['instantaneous'].apply(lambda x: np.std(list(map(float, x.split(',')))))
+    y_std = subset['instantaneous'].apply(np.std).values
 
     ax2.errorbar(x_shifted, y, yerr=y_std, fmt='o',color=colors.colors[i], markeredgecolor='black',ecolor='black', elinewidth=0.8, capsize=3, markersize=8,label=trajectory)
 

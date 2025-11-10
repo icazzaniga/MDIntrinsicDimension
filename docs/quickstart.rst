@@ -4,7 +4,7 @@ Quick start
 Basic Usage
 ----------------
 
-After activating the environment, import the package and the functions:
+Assuming the package is available in the environment, import it:
 
 .. code-block:: python
 
