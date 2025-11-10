@@ -22,12 +22,18 @@ jobs:
         with:
           python-version: "3.13"
 
-      - name: Install dependencies
-        run: |
-          pip install uv
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+          
       - name: Sphinx build
         run: |
           uv run --only-group docs make -C docs html
+
+      - name: Minimize uv cache
+        run: uv cache prune --ci
+      
       # Configure Pages (sets up base path, etc.)
       - name: Configure Pages
         uses: actions/configure-pages@v5
