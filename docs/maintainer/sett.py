@@ -1,6 +1,7 @@
 from md_intrinsic_dimension import intrinsic_dimension, section_id, secondary_structure_id
 import numpy as np
 import pandas as pd
+import matplotlib.lines as mlines
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from matplotlib.colors import ListedColormap
@@ -13,6 +14,7 @@ import matplotlib.patches as patches
 from matplotlib.collections import PatchCollection
 from itertools import product
 from matplotlib.lines import Line2D
+from pathlib import Path
 
 
 #build personalised cmap

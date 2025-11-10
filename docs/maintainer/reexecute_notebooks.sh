@@ -17,7 +17,7 @@
 
 # Run a notebook (with outputs saved into the same .ipynb)
 for f in estimators projections rmsd NTL9_plots villin_plots villin_data ; do 
-  uv run jupyter  nbconvert --execute --inplace $f.ipynb &
+  uv run jupyter  nbconvert --execute --inplace ../$f.ipynb &
 done
 
 wait
