@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-MDIntrinsicDimension - Intrinsic dimension estimation along molecular dynamics simulations
+MDIntrinsicDimension - Intrinsic dimension estimation for molecular dynamics simulations
 ==========================================================================================
 
 
