@@ -46,7 +46,7 @@ ID can be computed as follows:
 ```
 
 Any other parameter shared by the functions or specific for each, has a default.  
-Please refer to the [documentation](https://giorginolab.github.io/MDIntrinsicDimension/) and the [paper]() for detailed API and tutorials.
+Please refer to the [documentation](https://giorginolab.github.io/MDIntrinsicDimension/) and the [preprint](http://arxiv.org/abs/2511.13550) for detailed API and tutorials.
 
 
 
