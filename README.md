@@ -6,7 +6,24 @@ It includes three functions and as many analysis modes:
 
 - `intrinsic_dimension`: ID on whole molecule. 
 - `section_id`: ID on fixed sliding window along protein's sequence.    
-- `secondary_structure_id`: ID on contiguous secondary structure elements.  
+- `secondary_structure_id`: ID on contiguous secondary structure elements.
+
+
+Conceptual background: Intrinsic dimension (ID)
+-----------------
+
+In this package, the intrinsic dimension (ID) of an MD trajectory is used as a compact measure of the effective number of independent collective coordinates that describe
+the sampled fluctuations. Unlike the formal number of atomic degrees of freedom, ID discounts frozen or highly correlated directions and focuses on the modes that are
+actually explored on the timescale and in the chosen feature space.
+
+We typically work with internal-coordinate projections (e.g., backbone ϕ/ψ dihedrals, inter-residue distances, or χ side-chain dihedrals). Distance- and backbone-based
+projections mainly report on global folding state and large-scale structural rearrangements, while χ-based projections are more sensitive to side-chain conformational
+heterogeneity (e.g., in binding sites).
+
+ID is estimated using algorithms from the [`scikit-dimension`](https://github.com/j-bac/scikit-dimension) library, with Two Nearest Neighbours (TwoNN) as the default.
+Intuitively, these estimators infer dimensionality from how neighbour distances scale with radius in configuration space. In practice, ID plays a role analogous to
+“number of significant principal components or tICs” required to capture most of the variance, but accounting for time-dependent (instantaneous) variations and non-linear dependencies.
+
 
 Installation
 ------------
