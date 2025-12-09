@@ -4,17 +4,21 @@ import numpy as np
 import pandas as pd
 import pytest
 
+TOPO_PATH = "data/2hbaA00.pdb"
+TRAJ_PATH = "data/2hbaA00_320_0.xtc"
+
+
 @pytest.fixture
-def load_mol():  #once established, avoid multiple loadings
-    mole = Molecule('data/2f4k.pdb')
-    mole.read('data/short_2f4k_f0.xtc')
+def load_mol():  
+    mole = Molecule(TOPO_PATH)
+    mole.read(TRAJ_PATH)
     return mole 
 #mean_all = np.load('test_outputs/villin_mean_all.npy')
 #mean_last = np.load('test_outputs/villin_mean_last.npy')
 
 @pytest.fixture
 def load_section_ID(): 
-    return pd.read_csv('test_outputs/section_id.csv').drop('instantaneous', axis = 1)
+    return pd.read_csv('test_outputs/section_id.csv')
 
 
 
@@ -22,7 +26,7 @@ def load_section_ID():
 
 
 def test_control(load_mol, load_section_ID): #if all is imput correctly, the call works
-    sections = section_id(mol=load_mol, projection_method ='Dihedrals').drop('instantaneous', axis = 1)
+    sections = section_id(mol=load_mol, projection_method ='Dihedrals')
     pd.testing.assert_frame_equal(load_section_ID, sections, rtol=1e-5, atol=1e-8)
 
     #andrebbe controllato anche df instantaneous.
@@ -35,30 +39,30 @@ class TestProteinImport:
     '''
   
     def test_import_mol(self, load_section_ID):
-                    mol = Molecule('data/2f4k.pdb')   
-                    mol.read('data/short_2f4k_f0.xtc') 
-                    sections = section_id(mol=mol, projection_method='Dihedrals').drop('instantaneous', axis = 1)
+                    mol = Molecule(TOPO_PATH)   
+                    mol.read(TRAJ_PATH) 
+                    sections = section_id(mol=mol, projection_method='Dihedrals', id_method = 'global')
                     pd.testing.assert_frame_equal(load_section_ID, sections, rtol=1e-5, atol=1e-8)
 
     def test_import_topo_traj(self, load_section_ID):
-                    sections = section_id(topology='data/2f4k.pdb', trajectory='data/short_2f4k_f0.xtc', projection_method='Dihedrals').drop('instantaneous', axis = 1) 
-                    pd.testing.assert_frame_equal(load_section_ID.drop('instantaneous', axis = 1), sections, rtol=1e-5, atol=1e-8)
+                    sections = section_id(topology=TOPO_PATH, trajectory=TRAJ_PATH, projection_method='Dihedrals', id_method = 'global') 
+                    pd.testing.assert_frame_equal(load_section_ID, sections, rtol=1e-5, atol=1e-8)
             
     def test_import_mol_topo_traj(self,load_mol, load_section_ID): #da rivedere
-                    mol = Molecule('data/2f4k.pdb')   
-                    mol.read('data/short_2f4k_f0.xtc')         
-                    sections = section_id(topology='data/2f4k.pdb', trajectory='data/short_2f4k_f0.xtc', mol=load_mol, projection_method='Dihedrals').drop('instantaneous', axis = 1)
-                    pd.testing.assert_frame_equal(load_section_ID.drop('instantaneous', axis = 1), sections, rtol=1e-5, atol=1e-8)
+                    mol = Molecule(TOPO_PATH)   
+                    mol.read(TRAJ_PATH)         
+                    sections = section_id(topology=TOPO_PATH, trajectory=TRAJ_PATH, mol=load_mol, projection_method='Dihedrals')
+                    pd.testing.assert_frame_equal(load_section_ID, sections, rtol=1e-5, atol=1e-8)
 
 
 '''
     def test_import_missing_traj(self): 
         with pytest.raises(FileNotFoundError, match='Trajectory file not found'):
-            section_id(topology='data/2f4k.pdb', projection_method='Dihedrals')
+            section_id(topology=TOPO_PATH, projection_method='Dihedrals')
     
         def test_import_missing_topo(self): 
         with pytest.raises(FileNotFoundError, match='Topology file not found'):
-            section_id(trajectory='data/short_2f4k_f0.xtc', projection_method='Dihedrals')
+            section_id(trajectory=TRAJ_PATH, projection_method='Dihedrals')
 '''
 '''
     def test_import_none(self):

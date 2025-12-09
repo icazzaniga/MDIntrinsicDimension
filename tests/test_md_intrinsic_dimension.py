@@ -4,18 +4,14 @@ from moleculekit.projections.metriccoordinate import MetricCoordinate
 import numpy as np
 import pytest
 
-@pytest.fixture
-def topology_path():
-     return 'data/2f4k.pdb'
+TOPO_PATH = "data/2hbaA00.pdb"
+TRAJ_PATH = "data/2hbaA00_320_0.xtc"
 
-@pytest.fixture
-def trajectory_path():
-     return 'data/short_2f4k_f0.xtc'
 
 @pytest.fixture
 def load_mol():  
-    mole = Molecule('data/2f4k.pdb')
-    mole.read('data/short_2f4k_f0.xtc')
+    mole = Molecule(TOPO_PATH)
+    mole.read(TRAJ_PATH)
     return mole 
 
 #mean_all = np.load('test_outputs/_mean_all.npy')
@@ -24,6 +20,14 @@ def load_mol():
 @pytest.fixture
 def load_dih_local_ID(): 
     return np.load('test_outputs/local.npy')
+
+@pytest.fixture
+def load_dih_local_all_ID(): 
+    return np.load('test_outputs/mean_all.npy')
+
+@pytest.fixture
+def load_dih_local_last_ID(): 
+    return np.load('test_outputs/mean_last.npy')
 
 @pytest.fixture
 def load_dih_global_all_ID(): 
@@ -45,8 +49,10 @@ def load_coor_local_ID():
 
 class TestFunctionIDResults:
    
-    def test_coordinate_metric(self, load_mol, topology_path, load_coor_local_ID):
-        _,_,local_id =intrinsic_dimension(mol=load_mol, projection_method='Coordinate', projection_kwargs={'atomsel':'protein and name CA', 'refmol': Molecule(topology_path)})
+    def test_coordinate_metric(self, load_mol,load_dih_local_all_ID,load_dih_local_last_ID, load_coor_local_ID):
+        lid,lid100,local_id =intrinsic_dimension(mol=load_mol, projection_method='Coordinate', projection_kwargs={'atomsel':'protein and name CA', 'refmol': Molecule(TOPO_PATH)})
+        assert np.allclose(load_dih_local_all_ID,lid)
+        assert np.allclose(load_dih_local_last_ID, lid100)
         assert np.allclose(load_coor_local_ID,local_id)    
     
     def test_dihedrals_metric(self, load_mol, load_dih_local_ID):
@@ -65,37 +71,37 @@ class TestFunctionIDResults:
 
 
 class TestProteinLoad:
-    def test_load_mol(self, topology_path, trajectory_path, load_dih_local_ID):
-                    mol = Molecule(topology_path)   
-                    mol.read(trajectory_path) 
+    def test_load_mol(self, load_dih_local_ID):
+                    mol = Molecule(TOPO_PATH)   
+                    mol.read(TRAJ_PATH) 
                     _,_, local_id = intrinsic_dimension(mol=mol, projection_method='Dihedrals') #default local and #distances 
                     assert np.allclose(load_dih_local_ID, local_id)
 
-    def test_load_topo_traj(self,topology_path, trajectory_path, load_dih_local_ID):
-                    _,_,local_id = intrinsic_dimension(topology=topology_path, trajectory=trajectory_path, projection_method='Dihedrals') #default local and #distances 
+    def test_load_topo_traj(self, load_dih_local_ID):
+                    _,_,local_id = intrinsic_dimension(topology=TOPO_PATH, trajectory=TRAJ_PATH, projection_method='Dihedrals') #default local and #distances 
                     assert np.allclose(load_dih_local_ID, local_id)
             
-    def test_load_mol_topo_traj(self,load_mol, topology_path, trajectory_path, load_dih_local_ID): #da rivedere
-                    mol = Molecule(topology_path)   
-                    mol.read(trajectory_path)         
-                    _,_,local_id = intrinsic_dimension(topology=topology_path, trajectory=trajectory_path, mol=load_mol, projection_method='Dihedrals')
+    def test_load_mol_topo_traj(self,load_mol, load_dih_local_ID):
+                    mol = Molecule(TOPO_PATH)   
+                    mol.read(TRAJ_PATH)         
+                    _,_,local_id = intrinsic_dimension(topology=TOPO_PATH, trajectory=TRAJ_PATH, mol=load_mol, projection_method='Dihedrals')
                     assert np.allclose(load_dih_local_ID, local_id)
     
-    def test_load_missing_traj(self,topology_path): 
+    def test_load_missing_traj(self,): 
         with pytest.raises(FileNotFoundError, match='Trajectory file not found'):
-            intrinsic_dimension(topology=topology_path, projection_method='Dihedrals')
+            intrinsic_dimension(topology=TOPO_PATH, projection_method='Dihedrals')
     
-    def test_load_missing_topo(self, trajectory_path): 
+    def test_load_missing_topo(self, ): 
         with pytest.raises(FileNotFoundError, match='Topology file not found'):
-            intrinsic_dimension(trajectory=trajectory_path, projection_method='Dihedrals')
+            intrinsic_dimension(trajectory=TRAJ_PATH, projection_method='Dihedrals')
     
     def test_missing_arguments(self):
         with pytest.raises(FileNotFoundError, match='file not found: None'): #stops topology file following code order
             intrinsic_dimension(projection_method='Dihedrals')
 
-    def test_wrong_path(self, trajectory_path):
+    def test_wrong_path(self):
         with pytest.raises(FileNotFoundError, match = 'was not found.'): 
-            intrinsic_dimension(topology='wrong_path_to/topology_file', trajectory = trajectory_path, projection_method='Dihedrals')           
+            intrinsic_dimension(topology='wrong_path_to/topology_file', trajectory = TRAJ_PATH, projection_method='Dihedrals')           
 
 
 
@@ -113,8 +119,8 @@ class TestProjections:
         with pytest.raises(ImportError, match='Failed to import or use custom projection class'):
             intrinsic_dimension(mol=load_mol, projection_method='DoesNotExist')
         
-    def test_Projection_input(self, load_mol,topology_path, load_coor_local_ID):
-        met = MetricCoordinate(atomsel='protein and name CA', refmol = Molecule(topology_path))
+    def test_Projection_input(self, load_mol, load_coor_local_ID):
+        met = MetricCoordinate(atomsel='protein and name CA', refmol = Molecule(TOPO_PATH))
         _,_,local_id=intrinsic_dimension(mol=load_mol,projection_method=met)
         assert np.allclose(load_coor_local_ID,local_id)
 

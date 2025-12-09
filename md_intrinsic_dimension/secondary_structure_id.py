@@ -106,11 +106,12 @@ def secondary_structure_id(topology= None, trajectory=None, mol = None, mol_ref=
     projection_kwargs = projection_kwargs or {}
     id_kwargs = id_kwargs or {}
 
-    #system preparation and subdivision
+    #load Molecule or protein and trajectory
     if mol is None:
-        if not os.path.isfile(topology):
+        if topology is None:
             raise FileNotFoundError(f'Topology file not found: {topology}')
-        if not os.path.isfile(trajectory):
+
+        if trajectory is None:
             raise FileNotFoundError(f'Trajectory file not found: {trajectory}')
         
         mol = Molecule(topology, validateElements = False) #ref:PeriodicTable raises error with dummy atoms i. e. M
