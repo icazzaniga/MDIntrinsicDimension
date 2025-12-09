@@ -111,9 +111,10 @@ def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_
 
     #load Molecule or protein and trajectory
     if mol is None:
-        if not os.path.isfile(topology):
+        if topology is None:
             raise FileNotFoundError(f'Topology file not found: {topology}')
-        if not os.path.isfile(trajectory):
+
+        if trajectory is None:
             raise FileNotFoundError(f'Trajectory file not found: {trajectory}')
         
         mol = Molecule(topology, validateElements = False) #ref:PeriodicTable raises error with dummy atoms i. e. M
@@ -123,7 +124,7 @@ def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_
     builtins = {'Distances': lambda: compute_projections(mol, 'Distances', sele=sele, step=step),
             'Dihedrals': lambda:  compute_projections(mol, 'Dihedrals', dihedrals=dihedrals, sincos=sincos)}
         
-    if projection_method in builtins.keys():
+    if isinstance(projection_method, str) and projection_method in builtins.keys():
         projection = builtins[projection_method]
         projection =projection()
         logger.info(f'Built-in projection "{projection_method}" computed.')

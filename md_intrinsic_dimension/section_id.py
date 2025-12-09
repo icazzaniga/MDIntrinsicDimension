@@ -127,9 +127,13 @@ def section_id(topology=None, trajectory=None, mol=None, window_size=10, stride=
         
         if id_method == 'local':
             all_sim, last, instantaneous = intrinsic_dimension(mol=window_mol, projection_method=projection_method, id_method='local', projection_kwargs=projection_kwargs, id_kwargs=id_kwargs, verbose = False)
-        else:  # global
+        elif id_method == 'global':
             all_sim, last = intrinsic_dimension(mol=window_mol, projection_method=projection_method, id_method='global', projection_kwargs=projection_kwargs, id_kwargs=id_kwargs, verbose = False)
             instantaneous = []
+        else:
+            raise TypeError(
+            f'id_method must be "local" or "global", got {id_method} instead.'
+        )
 
         results.append({
             'start': start,
