@@ -31,9 +31,6 @@ jobs:
         run: |
           uv run --only-group docs make -C docs html
 
-      - name: Minimize uv cache
-        run: uv cache prune --ci
-      
       # Configure Pages (sets up base path, etc.)
       - name: Configure Pages
         uses: actions/configure-pages@v5
