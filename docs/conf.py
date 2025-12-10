@@ -6,10 +6,26 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+from pathlib import Path
+
+import tomllib
+
+
+def _read_version() -> str:
+    """Read the package version from pyproject.toml for docs coherency."""
+    pyproject_path = Path(__file__).resolve().parents[1] / "pyproject.toml"
+    try:
+        with pyproject_path.open("rb") as handle:
+            return tomllib.load(handle)["project"]["version"]
+    except Exception:
+        return "0.0.0"
+
+
 project = 'MDIntrinsicDimension'
 copyright = '2025, Irene Cazzaniga'
 author = 'Irene Cazzaniga'
-release = '0.1.0'
+release = _read_version()
+version = release
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
