@@ -38,29 +38,29 @@ def test_control(load_mol, load_mol_ref, load_secondary_structure_ID, load_secon
 
 
   
-class TestProteinImport:
+class TestProteinLoad:
 
-    def test_import_mol(self,load_mol, load_mol_ref, load_secondary_structure_ID):
+    def test_load_mol(self,load_mol, load_mol_ref, load_secondary_structure_ID):
                     mol = Molecule(TOPO_PATH)   
                     mol.read(TRAJ_PATH) 
                     structures, _ = secondary_structure_id(mol=load_mol, mol_ref = load_mol_ref,projection_method='Dihedrals', id_method = 'global')
                     pd.testing.assert_frame_equal(load_secondary_structure_ID, structures, rtol=1e-5, atol=1e-8)
 
-    def test_import_topo_traj(self,load_mol_ref, load_secondary_structure_ID):
+    def test_load_topo_traj(self,load_mol_ref, load_secondary_structure_ID):
                     structures,_ = secondary_structure_id(topology=TOPO_PATH, trajectory=TRAJ_PATH,mol_ref = load_mol_ref, projection_method='Dihedrals', id_method = 'global')
                     pd.testing.assert_frame_equal(load_secondary_structure_ID, structures, rtol=1e-5, atol=1e-8)
             
-    def test_import_mol_topo_traj(self,load_mol, load_mol_ref, load_secondary_structure_ID): #da rivedere
+    def test_load_mol_topo_traj(self,load_mol, load_mol_ref, load_secondary_structure_ID): #da rivedere
                     mol = Molecule(TOPO_PATH)   
                     mol.read(TRAJ_PATH)         
                     structures,_ = secondary_structure_id(topology=TOPO_PATH, trajectory=TRAJ_PATH, mol=load_mol, mol_ref = load_mol_ref,projection_method='Dihedrals', id_method = 'global')
                     pd.testing.assert_frame_equal(load_secondary_structure_ID, structures, rtol=1e-5, atol=1e-8)
 
-    def test_import_missing_traj(self, load_mol_ref): 
+    def test_load_missing_traj(self, load_mol_ref): 
         with pytest.raises(FileNotFoundError, match='Trajectory file not found'):
             secondary_structure_id(topology=TOPO_PATH,mol_ref = load_mol_ref, projection_method='Dihedrals')
 
-    def test_import_missing_topo(self, load_mol_ref): 
+    def test_load_missing_topo(self, load_mol_ref): 
         with pytest.raises(FileNotFoundError, match='Topology file not found'):
             secondary_structure_id(trajectory=TRAJ_PATH, mol_ref = load_mol_ref,projection_method='Dihedrals')
           
@@ -78,19 +78,13 @@ class TestProteinImport:
 
 
 class TestSecondaryStructure:                     
-    def test_import_missing_refmol(self, load_mol):
+    def test_load_missing_refmol(self, load_mol):
         with pytest.raises(FileNotFoundError, match='Missing reference structure for DSSP computation'):
             secondary_structure_id(mol=load_mol,projection_method='Dihedrals')
 
-    def test_import_long_refmol(self, load_mol):
+    def test_load_long_refmol(self, load_mol):
         with pytest.raises(ValueError, match='ref_mol must be 1 frame long.'):
             secondary_structure_id(mol=load_mol, mol_ref=load_mol,projection_method='Dihedrals')
     
 
     
-
-
-           
-
-
-   
