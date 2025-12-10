@@ -3,23 +3,18 @@ from moleculekit.molecule import Molecule
 import numpy as np
 import pandas as pd
 import pytest
-from tests.conftest import TOPO_PATH, TRAJ_PATH
+from tests.conftest import TOPO_PATH, TRAJ_PATH, REF_PATH
 
 @pytest.fixture
 def load_mol():  
     mole = Molecule(TOPO_PATH)
     mole.read(TRAJ_PATH)
     return mole 
-#mean_all = np.load('test_outputs/villin_mean_all.npy')
-#mean_last = np.load('test_outputs/villin_mean_last.npy')
+
 
 @pytest.fixture
 def load_section_ID(): 
-    return pd.read_pickle('test_outputs/section_id.pkl')
-
-
-
-
+    return pd.read_pickle(REF_PATH / 'section_id.pkl')
 
 
 
@@ -27,12 +22,6 @@ def load_section_ID():
 def test_control(load_mol, load_section_ID): #if all is imput correctly, the call works
     sections = section_id(mol=load_mol, projection_method ='Dihedrals', id_method = 'global')
     pd.testing.assert_frame_equal(load_section_ID, sections, rtol=1e-5, atol=1e-8)
-
-
-
-
-
-
 
 
 
@@ -67,10 +56,6 @@ class TestProteinImport:
         with pytest.raises(FileNotFoundError, match='file not found: None'):
             section_id(projection_method='Dihedrals')
       
-
-
-
-
 
 
 

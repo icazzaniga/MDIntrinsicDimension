@@ -3,7 +3,7 @@ from moleculekit.molecule import Molecule
 from moleculekit.projections.metriccoordinate import MetricCoordinate
 import numpy as np
 import pytest
-from tests.conftest import TOPO_PATH, TRAJ_PATH
+from tests.conftest import TOPO_PATH, TRAJ_PATH, REF_PATH
 
 ATOL=0.1
 
@@ -13,34 +13,30 @@ def load_mol():
     mole.read(TRAJ_PATH)
     return mole 
 
-#mean_all = np.load('test_outputs/_mean_all.npy')
-#mean_last = np.load('test_outputs/_mean_last.npy')
 
 @pytest.fixture
 def load_dih_local_ID(): 
-    return np.load('test_outputs/local.npy')
+    return np.load(REF_PATH / 'local.npy')
 
 @pytest.fixture
 def load_dih_local_all_ID(): 
-    return np.load('test_outputs/mean_all.npy')
+    return np.load(REF_PATH / 'mean_all.npy')
 
 @pytest.fixture
 def load_dih_local_last_ID(): 
-    return np.load('test_outputs/mean_last.npy')
+    return np.load(REF_PATH / 'mean_last.npy')
 
 @pytest.fixture
 def load_dih_global_all_ID(): 
-    return np.load('test_outputs/global_all.npy')  
+    return np.load(REF_PATH / 'global_all.npy')  
 
 @pytest.fixture
 def load_dih_global_last_ID(): 
-    return np.load('test_outputs/global_last.npy')    
+    return np.load(REF_PATH / 'global_last.npy')    
 
 @pytest.fixture
 def load_coor_local_ID():
-    return np.load('test_outputs/local_coordinates.npy')
-
-
+    return np.load(REF_PATH / 'local_coordinates.npy')
 
 
 

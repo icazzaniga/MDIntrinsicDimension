@@ -3,15 +3,14 @@ from moleculekit.molecule import Molecule
 import numpy as np
 import pandas as pd
 import pytest
-from tests.conftest import TOPO_PATH, TRAJ_PATH
+from tests.conftest import TOPO_PATH, TRAJ_PATH, REF_PATH
 
 @pytest.fixture
 def load_mol():  #once established, avoid multiple loadings
     mole = Molecule(TOPO_PATH)
     mole.read(TRAJ_PATH)
     return mole 
-#mean_all = np.load('test_outputs/villin_mean_all.npy')
-#mean_last = np.load('test_outputs/villin_mean_last.npy')
+
 
 @pytest.fixture
 def load_mol_ref():  #once established, avoid multiple loadings
@@ -20,16 +19,11 @@ def load_mol_ref():  #once established, avoid multiple loadings
 
 @pytest.fixture
 def load_secondary_structure_ID(): 
-    return pd.read_pickle('test_outputs/secondary_structure_id.pkl')
+    return pd.read_pickle(REF_PATH / 'secondary_structure_id.pkl')
 
 @pytest.fixture
 def load_secondary_structure_ID_table(): 
-    return pd.read_pickle('test_outputs/secondary_structure_id_table.pkl')
-
-
-
-
-
+    return pd.read_pickle(REF_PATH / 'secondary_structure_id_table.pkl')
 
 
 
@@ -38,9 +32,6 @@ def test_control(load_mol, load_mol_ref, load_secondary_structure_ID, load_secon
     structures,tables = secondary_structure_id(mol=load_mol,mol_ref=load_mol_ref, projection_method ='Dihedrals', id_method = 'global')
     pd.testing.assert_frame_equal(load_secondary_structure_ID, structures, rtol=1e-5, atol=1e-8)
     pd.testing.assert_frame_equal(load_secondary_structure_ID_table, tables)
-
-
-
 
 
 
