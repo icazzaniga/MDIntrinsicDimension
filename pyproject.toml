@@ -27,6 +27,7 @@ dependencies = [
     "pandas",
     "moleculekit",
     "scikit-dimension",
+    "matplotlib"  # An undeclared dependency of scikit-dimension ?
 ]
 
 [dependency-groups]
