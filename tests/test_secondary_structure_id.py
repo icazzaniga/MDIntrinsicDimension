@@ -3,9 +3,7 @@ from moleculekit.molecule import Molecule
 import numpy as np
 import pandas as pd
 import pytest
-
-TOPO_PATH = "data/2hbaA00.pdb"
-TRAJ_PATH = "data/2hbaA00_320_0.xtc"
+from tests.conftest import TOPO_PATH, TRAJ_PATH
 
 @pytest.fixture
 def load_mol():  #once established, avoid multiple loadings
