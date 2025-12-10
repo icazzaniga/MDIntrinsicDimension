@@ -1,4 +1,4 @@
-name: documentation
+name: Run regression tests
 
 on: [push, pull_request, workflow_dispatch]
 

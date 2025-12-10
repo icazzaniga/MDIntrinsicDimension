@@ -1,4 +1,4 @@
-name: documentation
+name: Generate documentation and deploy to GitHub Pages
 
 on: [push, pull_request, workflow_dispatch]
 
