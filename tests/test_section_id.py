@@ -18,7 +18,9 @@ def load_mol():
 
 @pytest.fixture
 def load_section_ID(): 
-    return pd.read_csv('test_outputs/section_id.csv')
+    return pd.read_pickle('test_outputs/section_id.pkl')
+
+
 
 
 
@@ -26,17 +28,19 @@ def load_section_ID():
 
 
 def test_control(load_mol, load_section_ID): #if all is imput correctly, the call works
-    sections = section_id(mol=load_mol, projection_method ='Dihedrals')
+    sections = section_id(mol=load_mol, projection_method ='Dihedrals', id_method = 'global')
     pd.testing.assert_frame_equal(load_section_ID, sections, rtol=1e-5, atol=1e-8)
 
-    #andrebbe controllato anche df instantaneous.
+
+
+
+
+
+
+
 
 
 class TestProteinImport:
-
-    '''
-    Check correct importing setup and conditions, before slicing the protein
-    '''
   
     def test_import_mol(self, load_section_ID):
                     mol = Molecule(TOPO_PATH)   
@@ -51,24 +55,26 @@ class TestProteinImport:
     def test_import_mol_topo_traj(self,load_mol, load_section_ID): #da rivedere
                     mol = Molecule(TOPO_PATH)   
                     mol.read(TRAJ_PATH)         
-                    sections = section_id(topology=TOPO_PATH, trajectory=TRAJ_PATH, mol=load_mol, projection_method='Dihedrals')
+                    sections = section_id(topology=TOPO_PATH, trajectory=TRAJ_PATH, mol=load_mol, projection_method='Dihedrals', id_method = 'global')
                     pd.testing.assert_frame_equal(load_section_ID, sections, rtol=1e-5, atol=1e-8)
 
-
-'''
     def test_import_missing_traj(self): 
         with pytest.raises(FileNotFoundError, match='Trajectory file not found'):
             section_id(topology=TOPO_PATH, projection_method='Dihedrals')
     
-        def test_import_missing_topo(self): 
+    def test_import_missing_topo(self): 
         with pytest.raises(FileNotFoundError, match='Topology file not found'):
             section_id(trajectory=TRAJ_PATH, projection_method='Dihedrals')
-'''
-'''
-    def test_import_none(self):
-        with pytest.raises(ImportError, match=''):
+
+    def test_missing_arguments(self):
+        with pytest.raises(FileNotFoundError, match='file not found: None'):
             section_id(projection_method='Dihedrals')
-'''       
+      
+
+
+
+
+
 
 
 
