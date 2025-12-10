@@ -26,6 +26,7 @@ dependencies = [
     "numpy",
     "pandas",
     "moleculekit",
+    "mdtraj", # optional dependency of moleculekit
     "scikit-dimension",
     "matplotlib"  # An undeclared dependency of scikit-dimension ?
 ]
