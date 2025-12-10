@@ -46,15 +46,15 @@ def load_coor_local_ID():
 
 class TestFunctionIDResults:
    
-    def test_coordinate_metric(self, load_mol,load_dih_local_all_ID,load_dih_local_last_ID, load_coor_local_ID):
-        lid,lid100,local_id =intrinsic_dimension(mol=load_mol, projection_method='Coordinate', projection_kwargs={'atomsel':'protein and name CA', 'refmol': Molecule(TOPO_PATH)})
-        assert np.allclose(load_dih_local_all_ID,lid)
-        assert np.allclose(load_dih_local_last_ID, lid100)
+    def test_coordinate_metric(self, load_mol, load_coor_local_ID):
+        _,_,local_id =intrinsic_dimension(mol=load_mol, projection_method='Coordinate', projection_kwargs={'atomsel':'protein and name CA', 'refmol': Molecule(TOPO_PATH)})
         assert np.allclose(load_coor_local_ID,local_id)    
     
-    def test_dihedrals_metric(self, load_mol, load_dih_local_ID):
-        _,_,local_id =intrinsic_dimension(mol=load_mol, projection_method='Dihedrals')
+    def test_dihedrals_metric(self, load_mol,load_dih_local_all_ID,load_dih_local_last_ID, load_dih_local_ID):
+        lid,lid100,local_id =intrinsic_dimension(mol=load_mol, projection_method='Dihedrals')
         assert np.allclose(load_dih_local_ID,local_id)  
+        assert np.allclose(load_dih_local_all_ID,lid)
+        assert np.allclose(load_dih_local_last_ID, lid100)
 
     def test_global_id(self, load_mol, load_dih_global_all_ID, load_dih_global_last_ID):
          gid, gid100 = intrinsic_dimension(mol=load_mol, projection_method ='Dihedrals', id_method = 'global')
