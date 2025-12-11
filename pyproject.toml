@@ -54,7 +54,7 @@ docs = [
 ]
 
 [project.urls]
-"Homepage" = "https://github.com/icazzani/MDIntrinsicDimension"
+"Homepage" = "https://github.com/giorginolab/MDIntrinsicDimension"
 "Documentation" = "https://giorginolab.github.io/MDIntrinsicDimension"
-"Issue Tracker" = "https://github.com/icazzani/MDIntrinsicDimension/issues"
+"Issue Tracker" = "https://github.com/giorginolab/MDIntrinsicDimension/issues"
 
