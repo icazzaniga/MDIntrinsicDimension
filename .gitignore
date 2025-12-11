@@ -1,3 +1,9 @@
+.*.xtc*
+docs/examples/NTL9/
+docs/examples/villin/
+docs/examples/ntl9_data/
+docs/examples/villin_data/
+
 # Python
 __pycache__/
 *.pyc
@@ -5,11 +11,6 @@ __pycache__/
 *.pyd
 *.egg-info/
 *.egg
-.*.xtc*
-docs/examples/NTL9/
-docs/examples/villin/
-docs/examples/ntl9_data/
-docs/examples/villin_data/
 .env/
 .env*/ 
 env/
@@ -18,6 +19,9 @@ extra/
 build/
 .ipynb_checkpoints/
 _build/
+.pytest_cache/
+.venv/
+.ruff_cache/
 
 uv.lock
 
