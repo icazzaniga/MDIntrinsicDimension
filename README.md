@@ -1,6 +1,6 @@
 # MDIntrinsicDimension 
 
-MDIntriniscDimension is a Python package for the estimatation of  the intrinsic dimension (ID) of high-dimensional data from, protein molecular dynamics, helping you reduce data to a lower-dimensional manifold while preserving essential information.
+MDIntriniscDimension is a Python package for the estimatation of  the intrinsic dimension (ID) of high-dimensional data from protein molecular dynamics, helping you reduce data to a lower-dimensional manifold while preserving essential information.
 
 It includes three functions and as many analysis modes:    
 

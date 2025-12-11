@@ -129,7 +129,7 @@ class TestProteinLoad:
 
 
 class TestProjections:
-    # riordinare secondo sequenza main function
+    
     def test_lowercase(self, load_mol):
         with pytest.raises(
             ImportError, match="Failed to import or use custom projection class"

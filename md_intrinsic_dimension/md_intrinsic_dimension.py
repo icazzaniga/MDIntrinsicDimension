@@ -155,7 +155,6 @@ def intrinsic_dimension(topology= None, trajectory=None, mol = None, projection_
     else:
         raise TypeError('projection_method must be a string referring to a MoleculeKit Projection class, an array, or a Projection object. If string, the first letter of each word should be capitalized.')
 
-#AGGIUNGERE CHECK ARRAY
 
     # ID estimation mapping
     if id_method == 'local':

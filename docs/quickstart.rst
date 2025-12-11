@@ -112,10 +112,11 @@ These can be ignored if not necessary for the projection selected or overwritten
 
     #create the Molecule object by loading topology and trajectory
     mol = Molecule('villin/2f4k.pdb')
+    ref_mol = mol
     mol.read('villin/2f4k_f1.xtc')
     
     #define new parameters for projection method "Coordianate"
-    proj = {'atomsel':'name CA','refmol':mol} 
+    proj = {'atomsel':'name CA','refmol':ref_mol} 
 
     #compute ID
     intrinsic_dimension(topology = 'villin/2f4k.pdb', trajectory = 'villin/2f4k_F.xtc', 
@@ -146,7 +147,7 @@ These can be ignored if not necessary for the projection selected or overwritten
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 :mark:`id_method` includes ``local``, ``global`` (default "local"). 
 
-In case of ``local`` ID estimation, the estimator identifies sub-regions of the dataset based on a shared local feature (in this case time) on which ID is computed.     
+In case of ``local`` ID estimation, the estimator identifies sub-regions of the dataset based on a shared local feature (in this case, time) on which ID is computed.     
 ``global`` ID estimation consists in the computation of a single-summary value of ID for the entire system. For a thorought image of the system in MD, we suggest to use ``local``. 
  
 .. code-block:: python
