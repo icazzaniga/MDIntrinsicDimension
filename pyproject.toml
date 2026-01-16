@@ -24,11 +24,11 @@ classifiers = [
 
 dependencies = [
     "numpy",
-    "pandas",
     "moleculekit",
     "mdtraj", # optional dependency of moleculekit
-    "scikit-dimension",
-    "matplotlib"  # An undeclared dependency of scikit-dimension ?
+    "scikit-dimension", 
+    "matplotlib",  # An undeclared dependency of scikit-dimension ?
+    "pandas",
 ]
 
 [dependency-groups]
@@ -38,6 +38,14 @@ dev = [
     "jupyter",
     "jupyter-ruff",
     "jupyterlab>=4.4.7",
+]
+
+# Includes numba and llvmlite kludges for uv https://github.com/astral-sh/uv/issues/6281
+# In principle this should have been simply:   uv run --with pytest pytest
+pytest = [
+    "pytest",
+    "numba>0.63",
+    "llvmlite",
 ]
 
 docs = [
